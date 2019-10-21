@@ -11,7 +11,6 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@RequiredArgsConstructor
 @Entity
 @Table(name = "users", schema = "test")
 public class User {

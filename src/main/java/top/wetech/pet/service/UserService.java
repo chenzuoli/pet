@@ -1,9 +1,11 @@
 package top.wetech.pet.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import top.wetech.pet.entity.User;
 import top.wetech.pet.repository.UserRepository;
 
+@Service
 public class UserService extends BaseService {
 
     @Autowired
