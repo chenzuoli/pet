@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import top.wetech.pet.common.Constant;
 import top.wetech.pet.entity.User;
 import top.wetech.pet.service.UserService;
 
 /**
- * 返回字符串
+ * 返回对象
  */
 // @RestController
 /**
@@ -22,9 +23,10 @@ import top.wetech.pet.service.UserService;
 public class UserController {
     @Autowired
     JdbcTemplate jdbc;
-
     @Autowired
-    UserService service;
+    Constant constant;
+    @Autowired
+    UserService userService;
 
     @RequestMapping("/index")
     public String index(){
@@ -33,12 +35,12 @@ public class UserController {
 
     @RequestMapping("/getUserById")
     public User getUserById(@RequestParam String id){
-        return service.getUserById(id);
+        return userService.getUserById(id);
     }
 
     @RequestMapping("/getUserByMobile")
     public User getUserByMobile(@RequestParam String mobile){
-        return service.getUserByMobile(mobile);
+        return userService.getUserByMobile(mobile);
     }
 
     @GetMapping("/getIndexJsp")

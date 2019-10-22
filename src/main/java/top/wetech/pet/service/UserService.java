@@ -3,7 +3,7 @@ package top.wetech.pet.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.wetech.pet.entity.User;
-import top.wetech.pet.repository.UserRepository;
+import top.wetech.pet.dao.UserRepository;
 
 @Service
 public class UserService extends BaseService {
@@ -20,4 +20,7 @@ public class UserService extends BaseService {
     public User getUserByMobile(String mobile) {
         return repo.findUserByMobile(mobile);
     }
+
+
+
 }
