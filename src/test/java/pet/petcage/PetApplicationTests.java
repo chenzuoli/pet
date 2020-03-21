@@ -1,4 +1,4 @@
-package top.wetech.pet;
+package pet.petcage;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

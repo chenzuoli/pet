@@ -1,4 +1,4 @@
-package top.wetech.pet.common;
+package pet.petcage.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,9 +15,9 @@ import org.springframework.context.annotation.PropertySource;
 @AllArgsConstructor
 public class Constant {
     private String select_user_by_id_sql;
-    private String select_user_by_mobile_sql;
+    private String select_user_by_phone_sql;
     private String insert_user_sql;
     private String update_user_by_id_sql;
-    private String update_user_by_mobile_sql;
+    private String update_user_by_phone_sql;
 
 }

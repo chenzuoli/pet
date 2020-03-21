@@ -1,4 +1,4 @@
-package top.wetech.pet.controller;
+package pet.petcage.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -7,10 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import top.wetech.pet.common.Constant;
-import top.wetech.pet.entity.User;
-import top.wetech.pet.service.UserService;
+import pet.petcage.common.Constant;
+import pet.petcage.entity.User;
+import pet.petcage.service.UserService;
 
 /**
  * 返回对象
@@ -38,9 +37,9 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @RequestMapping("/getUserByMobile")
-    public User getUserByMobile(@RequestParam String mobile){
-        return userService.getUserByMobile(mobile);
+    @RequestMapping("/getUserByPhone")
+    public User getUserByPhone(@RequestParam String phone){
+        return userService.getUserByPhone(phone);
     }
 
     @GetMapping("/getIndexJsp")

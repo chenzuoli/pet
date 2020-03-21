@@ -1,9 +1,9 @@
-package top.wetech.pet.service;
+package pet.petcage.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top.wetech.pet.entity.User;
-import top.wetech.pet.dao.UserRepository;
+import pet.petcage.dao.UserRepository;
+import pet.petcage.entity.User;
 
 @Service
 public class UserService extends BaseService {
@@ -17,10 +17,8 @@ public class UserService extends BaseService {
     }
 
     @Override
-    public User getUserByMobile(String mobile) {
-        return repo.findUserByMobile(mobile);
+    public User getUserByPhone(String phone) {
+        return repo.findUserByPhone(phone);
     }
-
-
 
 }

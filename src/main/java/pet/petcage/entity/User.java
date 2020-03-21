@@ -1,4 +1,4 @@
-package top.wetech.pet.entity;
+package pet.petcage.entity;
 
 import lombok.*;
 
@@ -12,16 +12,16 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "users", schema = "test")
+@Table(name = "users", schema = "petcage")
 public class User {
     @Id
     @GeneratedValue
     private String id;
-    private String mobile;
-    private String nickname;
-    private String gender;
-    private String age;
-    private String idcard;
-    private String createtime;
-    private String updatetime;
+    private String user_id;
+    private String phone;
+    private String open_id;
+    private String union_id;
+    private String pwd;
+    private String create_time;
+    private String update_time;
 }
