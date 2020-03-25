@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@ConfigurationProperties(prefix = "sql")
-@PropertySource("classpath:sql.properties")
+@ConfigurationProperties
+@PropertySource("classpath:param.properties")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,5 +19,10 @@ public class Constant {
     private String insert_user_sql;
     private String update_user_by_id_sql;
     private String update_user_by_phone_sql;
-
+    private String wx_app_id;
+    private String wx_app_secret;
+    private String access_url;
+    private String sms_url;
+    private String sms_app_id;
+    private String sms_app_secret;
 }

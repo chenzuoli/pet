@@ -3,22 +3,34 @@ package pet.petcage.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pet.petcage.dao.UserRepository;
+import pet.petcage.entity.Device;
 import pet.petcage.entity.User;
 
+import java.util.List;
+
 @Service
-public class UserService extends BaseService {
+public class UserService extends BaseService<User> {
 
     @Autowired
     UserRepository repo;
 
     @Override
-    public User getUserById(String id) {
-        return repo.findUserById(id);
+    public User getById(String id) {
+        return repo.findUserByPhone(id);
     }
 
-    @Override
-    public User getUserByPhone(String phone) {
-        return repo.findUserByPhone(phone);
+    public boolean loginCheck(String phone, String pwd) {
+        List<User> users = repo.loginCheck(phone, pwd);
+        System.out.println(users);
+        return users.size() != 0;
+    }
+
+    public boolean updatePass(String user_id, String pwd, String phone) {
+        return repo.updatePass(user_id, pwd, phone);
+    }
+
+    public List<Device> getDeviceLocations() {
+        return null;
     }
 
 }

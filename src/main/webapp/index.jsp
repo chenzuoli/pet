@@ -11,6 +11,6 @@
     <title>Title</title>
 </head>
 <body>
-    Welcome to index jsp.
+Welcome to index jsp.
 </body>
 </html>

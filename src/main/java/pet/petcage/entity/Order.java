@@ -1,5 +1,6 @@
 package pet.petcage.entity;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,24 +12,25 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * Created by user chenzuoli on 2020/3/22 16:24
- * description: 用户表
+ * Created by user chenzuoli on 2020/3/22 16:23
+ * description: 日志表
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "user", schema = "petcage")
-public class User {
+@Table(name = "order", schema = "petcage")
+public class Order {
     @Id
     @GeneratedValue
     private String id; // 自增主键
     private String user_id; // 用户id
-    private String phone; // 手机号
-    private String open_id; // 用户小程序open_id
-    private String union_id; // 用户小程序union_id
-    private String pwd; // 用户账号密码
-    private String create_time; // 创建时间
-    private String update_time; // 更新时间
+    private String is_done; // 订单是否完成
+    private String device_id; // 设备id；
+    private String start_time; // 订单开始时间
+    private String end_time; // 订单结束时间
+    private String amount; // 订单金额
+    private String create_time; //
+    private String update_time; //
 }
