@@ -22,7 +22,7 @@ public class MiniProgramController {
      * @param js_code 小程序生成的code
      * @return access_token
      */
-    @RequestMapping(value = "/access_token", method = RequestMethod.POST)
+    @RequestMapping(value = "/accessToken", method = RequestMethod.POST)
     public String accessToken(@RequestParam String js_code) {
         HashMap<String, String> params = new HashMap<>();
         params.put("appid", constant.getWx_app_id());

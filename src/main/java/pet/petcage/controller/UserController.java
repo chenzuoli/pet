@@ -156,6 +156,11 @@ public class UserController {
         return result;
     }
 
+    /**
+     * 获取用户钱包信息
+     * @param phone 用户手机号
+     * @return 返回用户钱包信息
+     */
     @RequestMapping(value = "/getUserWallet", method = RequestMethod.POST)
     public User getUserWallet(@RequestParam("phone") String phone) {
         User userWallet = userService.getUserWallet(phone);
