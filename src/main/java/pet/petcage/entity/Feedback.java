@@ -25,10 +25,14 @@ public class Feedback {
     @Id
     @GeneratedValue
     private String id;
-    private String user_id;
+    private String phone;
     private String feedback_type;
     private String feedback_content;
     private String pictures;
+    private String latitude;
+    private String longitude;
+    private String petcage_id;
+    private String desc;
     private String create_time;
     private String update_time;
 }

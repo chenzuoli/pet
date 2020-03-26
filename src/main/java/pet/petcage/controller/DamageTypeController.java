@@ -20,7 +20,7 @@ public class DamageTypeController {
     DamageTypeService damageTypeService;
 
     @RequestMapping(value = "/getDamageType", method = RequestMethod.POST)
-    public List<DamageType> getDamageType(){
+    public List<DamageType> getDamageType() {
         return damageTypeService.getDamageType();
     }
 

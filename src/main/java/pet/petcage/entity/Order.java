@@ -25,7 +25,7 @@ public class Order {
     @Id
     @GeneratedValue
     private String id; // 自增主键
-    private String user_id; // 用户id
+    private String phone; // 用户手机号
     private String is_done; // 订单是否完成
     private String device_id; // 设备id；
     private String start_time; // 订单开始时间

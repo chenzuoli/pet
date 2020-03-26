@@ -25,7 +25,7 @@ public class Log {
     @Id
     @GeneratedValue
     private String id; // 自增主键
-    private String user_id; // 用户id
+    private String phone; // 用户手机号
     private String open_id; // 用户open_id
     private String union_id; // 用户union_id
     private String longitude; // 用户径度

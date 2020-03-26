@@ -29,6 +29,10 @@ public class User {
     private String open_id; // 用户小程序open_id
     private String union_id; // 用户小程序union_id
     private String pwd; // 用户账号密码
+    private String user_type; // 用户类型(1普通会员,2周卡会员,3月卡会员,4季卡会员,5年卡会员)
+    private String balance; // 余额
+    private String valid_start_date; // 会员有效开始日期
+    private String valid_end_date; // 会员有效结束日期
     private String create_time; // 创建时间
     private String update_time; // 更新时间
 }

@@ -21,7 +21,7 @@ public class DamageTypeService extends BaseService<DamageType> {
         return null;
     }
 
-    public List<DamageType> getDamageType(){
+    public List<DamageType> getDamageType() {
         return damageTypeRepository.getDamageType();
     }
 

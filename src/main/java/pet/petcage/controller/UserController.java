@@ -38,7 +38,7 @@ public class UserController {
      * @param phone 用户手机号
      * @return 返回用户对象
      */
-    @RequestMapping("/getUserByPhone")
+    @RequestMapping(value = "/getUserByPhone", method = RequestMethod.POST)
     public User getUserByPhone(@RequestParam String phone) {
         return userService.getById(phone);
     }
@@ -154,6 +154,16 @@ public class UserController {
             }
         }
         return result;
+    }
+
+    @RequestMapping(value = "/getUserWallet", method = RequestMethod.POST)
+    public User getUserWallet(@RequestParam("phone") String phone) {
+        User userWallet = userService.getUserWallet(phone);
+        userWallet.setPhone("");
+        userWallet.setOpen_id("");
+        userWallet.setUnion_id("");
+        userWallet.setPwd("");
+        return userWallet;
     }
 
 }

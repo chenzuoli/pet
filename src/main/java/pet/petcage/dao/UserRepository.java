@@ -32,4 +32,8 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query(value = "update user set user_id = '?1' pwd = password(?2) where phone = '?3'", nativeQuery = true)
     boolean updatePass(String user_id, String pwd, String phone);
 
+    @Query(value = "select * from user where phone = ?1", nativeQuery = true)
+    User getUserWallet(String phone);
+
+
 }

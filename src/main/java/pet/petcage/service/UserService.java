@@ -3,7 +3,6 @@ package pet.petcage.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pet.petcage.dao.UserRepository;
-import pet.petcage.entity.Device;
 import pet.petcage.entity.User;
 
 import java.util.List;
@@ -29,8 +28,7 @@ public class UserService extends BaseService<User> {
         return repo.updatePass(user_id, pwd, phone);
     }
 
-    public List<Device> getDeviceLocations() {
-        return null;
+    public User getUserWallet(String phone) {
+        return repo.getUserWallet(phone);
     }
-
 }

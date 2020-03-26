@@ -16,6 +16,12 @@ public class MiniProgramController {
     @Autowired
     Constant constant;
 
+    /**
+     * 小程序获取session access_token
+     *
+     * @param js_code 小程序生成的code
+     * @return access_token
+     */
     @RequestMapping(value = "/access_token", method = RequestMethod.POST)
     public String accessToken(@RequestParam String js_code) {
         HashMap<String, String> params = new HashMap<>();
