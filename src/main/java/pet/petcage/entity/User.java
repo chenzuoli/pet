@@ -24,7 +24,6 @@ public class User {
     @Id
     @GeneratedValue
     private String id; // 自增主键
-    private String user_id; // 用户id
     private String phone; // 手机号
     private String open_id; // 用户小程序open_id
     private String union_id; // 用户小程序union_id
@@ -33,6 +32,14 @@ public class User {
     private String balance; // 余额
     private String valid_start_date; // 会员有效开始日期
     private String valid_end_date; // 会员有效结束日期
+    private String token; // 登录access_token
+    private String country; // 国别
+    private String province; // 省份
+    private String city; // 城市
+    private String avatar_url; // 头像url
+    private String gender; // 性别
+    private String nick_name; // 昵称
+    private String language; // 语言
     private String create_time; // 创建时间
     private String update_time; // 更新时间
 }

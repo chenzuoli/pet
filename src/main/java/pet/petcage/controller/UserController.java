@@ -3,7 +3,6 @@ package pet.petcage.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.zhenzi.sms.ZhenziSmsClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +13,7 @@ import pet.petcage.service.UserService;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -25,8 +25,7 @@ import java.util.Random;
  */
 @RestController
 public class UserController {
-    @Autowired
-    JdbcTemplate jdbc;
+
     @Autowired
     Constant constant;
     @Autowired
@@ -125,7 +124,7 @@ public class UserController {
     /**
      * 更新用户密码
      *
-     * @param user_id     用户id
+     * @param nick_name   用户昵称
      * @param pwd         用户新密码
      * @param phone       用户手机号
      * @param code        更改密码手机验证码
@@ -133,7 +132,7 @@ public class UserController {
      * @return 更新结果
      */
     @RequestMapping(value = "/updatePass", method = RequestMethod.POST)
-    public JSONObject updatePass(@RequestParam("user_id") String user_id,
+    public JSONObject updatePass(@RequestParam("nick_name") String nick_name,
                                  @RequestParam("pwd") String pwd,
                                  @RequestParam("phone") String phone,
                                  @RequestParam("code") String code,
@@ -145,9 +144,9 @@ public class UserController {
             result.put("msg", "验证码失效");
         } else {
             if (phone.equals(json.getString("phone")) && code.equals(json.getString("code"))) {
-                boolean flag = userService.updatePass(user_id, pwd, phone);
-                result.put("code", flag ? "1" : "0");
-                result.put("msg", flag ? "更新成功" : "更新失败");
+                int flag = userService.updatePass(nick_name, pwd, phone);
+                result.put("code", flag > 0 ? "1" : "0");
+                result.put("msg", flag> 0 ? "更新成功" : "更新失败");
             } else {
                 result.put("code", "0");
                 result.put("msg", "验证码错误");
@@ -158,6 +157,7 @@ public class UserController {
 
     /**
      * 获取用户钱包信息
+     *
      * @param phone 用户手机号
      * @return 返回用户钱包信息
      */
@@ -169,6 +169,21 @@ public class UserController {
         userWallet.setUnion_id("");
         userWallet.setPwd("");
         return userWallet;
+    }
+
+    @RequestMapping(value = "/getUserByOpenid", method = RequestMethod.POST)
+    public List<User> getUserByOpenid(@RequestParam("open_id") String open_id) {
+        return userService.getUserByOpenid(open_id);
+    }
+
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    public int addUser(User user) {
+        return userService.addUser(user);
+    }
+
+    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
+    public int updateUser(User user) {
+        return userService.updateUser(user);
     }
 
 }
