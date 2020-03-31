@@ -32,7 +32,7 @@ public class Feedback {
     private String latitude;
     private String longitude;
     private String petcage_id;
-    private String desc;
+    private String description;
     private String create_time;
     private String update_time;
 }

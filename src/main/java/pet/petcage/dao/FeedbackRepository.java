@@ -18,7 +18,7 @@ public interface FeedbackRepository extends JpaRepository<Feedback, String> {
 
     @Transactional
     @Modifying
-    @Query(value = "insert into feedback(phone, feedback_type, feedback_content, pictures, latitude, longitude, petcage_id, `desc`) values(?,?,?,?,?,?,?,?)", nativeQuery = true)
-    int addFeedback(String phone, String feedback_type, String feedback_content, String pictures, String latitude, String longitude, String petcage_id, String desc);
+    @Query(value = "insert into feedback(phone, feedback_type, feedback_content, pictures, latitude, longitude, petcage_id, description) values(?,?,?,?,?,?,?,?)", nativeQuery = true)
+    int addFeedback(String phone, String feedback_type, String feedback_content, String pictures, String latitude, String longitude, String petcage_id, String description);
 
 }

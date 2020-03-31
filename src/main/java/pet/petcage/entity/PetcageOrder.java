@@ -20,8 +20,8 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "order", schema = "petcage")
-public class Order {
+@Table(name = "petcage_order", schema = "petcage")
+public class PetcageOrder {
     @Id
     @GeneratedValue
     private String id; // 自增主键

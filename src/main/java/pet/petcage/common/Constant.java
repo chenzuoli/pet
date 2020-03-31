@@ -25,4 +25,8 @@ public class Constant {
     private String sms_url;
     private String sms_app_id;
     private String sms_app_secret;
+    private String dev_command_list;
+    private String decrypt_open_url;
+    private String decrypt_close_url;
+    private String acctoken;
 }

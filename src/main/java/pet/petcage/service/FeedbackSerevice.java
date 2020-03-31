@@ -21,9 +21,9 @@ public class FeedbackSerevice extends BaseService<Feedback> {
     }
 
     public int addFeedback(String phone, String feedback_type, String feedback_content,
-                           String pictures, String latitude, String longitude, String petcage_id, String desc) {
+                           String pictures, String latitude, String longitude, String petcage_id, String description) {
         return feedRepo.addFeedback(phone, feedback_type, feedback_content, pictures,
-                latitude, longitude, petcage_id, desc);
+                latitude, longitude, petcage_id, description);
     }
 
 }

@@ -28,8 +28,8 @@ public class FeedbackController {
      * @param latitude         反馈时用户径度
      * @param longitude        反馈时用户纬度
      * @param petcage_id       笼牌号
-     * @param desc             反馈描述
-     * @return
+     * @param description      反馈描述
+     * @return 返回数值  > 0代表添加成功
      */
     @RequestMapping(value = "/addFeedback", method = RequestMethod.POST)
     int addFeedback(@RequestParam String phone,
@@ -39,9 +39,9 @@ public class FeedbackController {
                     @RequestParam String latitude,
                     @RequestParam String longitude,
                     @RequestParam String petcage_id,
-                    @RequestParam String desc) {
+                    @RequestParam String description) {
         return feedbackSerevice.addFeedback(phone, feedback_type, feedback_content, pictures,
-                latitude, longitude, petcage_id, desc);
+                latitude, longitude, petcage_id, description);
     }
 
 }

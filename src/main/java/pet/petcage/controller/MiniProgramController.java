@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pet.petcage.common.Constant;
+import pet.petcage.dto.BluetoothDTO;
 import pet.petcage.dto.LoginDTO;
 import pet.petcage.dto.ResultDTO;
 import pet.petcage.dto.TokenDTO;
@@ -31,7 +32,7 @@ public class MiniProgramController {
      * 小程序获取session access_token, 保存用户token到mysql数据库
      *
      * @param js_code 小程序生成的code
-     * @return access_token
+     * @return session_key open_id
      */
     @RequestMapping(value = "/accessToken", method = RequestMethod.POST)
     public String accessToken(@RequestParam String js_code) {
@@ -78,6 +79,26 @@ public class MiniProgramController {
         TokenDTO data = new TokenDTO();
         data.setToken(token);
         return ResultDTO.ok(data);
+    }
+
+
+    /**
+     * 获取蓝牙设备指令集
+     *
+     * @param dvname 设备名称
+     * @return 设备指令集
+     */
+    @RequestMapping(value = "/get_device_bluetooth_command", method = RequestMethod.POST)
+    public ResultDTO getDeviceBluetoothCommand(@RequestParam("dvname") String dvname) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("dvname", dvname);
+        params.put("acctoken", constant.getAcctoken());
+        String response = HttpUtil.sendPost(constant.getDev_command_list(), params);
+        BluetoothDTO bluetoothDTO = new BluetoothDTO();
+        JSONObject jsonObject = JSONObject.parseObject(response);
+        bluetoothDTO.setSta(jsonObject.getString("sta"));
+        bluetoothDTO.setMsg(jsonObject.getJSONObject("msg"));
+        return ResultDTO.ok(bluetoothDTO);
     }
 
 }
