@@ -3,20 +3,22 @@ package pet.petcage.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import pet.petcage.common.Constant;
-import pet.petcage.dto.BluetoothDTO;
-import pet.petcage.dto.LoginDTO;
-import pet.petcage.dto.ResultDTO;
-import pet.petcage.dto.TokenDTO;
+import pet.petcage.dto.*;
 import pet.petcage.entity.User;
 import pet.petcage.service.UserService;
 import pet.petcage.util.HttpUtil;
 
+import java.io.*;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -29,13 +31,13 @@ public class MiniProgramController {
     UserService userService;
 
     /**
-     * 小程序获取session access_token, 保存用户token到mysql数据库
+     * 小程序获取session_key openid
      *
      * @param js_code 小程序生成的code
      * @return session_key open_id
      */
-    @RequestMapping(value = "/accessToken", method = RequestMethod.POST)
-    public String accessToken(@RequestParam String js_code) {
+    @RequestMapping(value = "/open_id", method = RequestMethod.POST)
+    public ResultDTO openId(@RequestParam String js_code) {
         HashMap<String, String> params = new HashMap<>();
         params.put("appid", constant.getWx_app_id());
         params.put("secret", constant.getWx_app_secret());
@@ -43,14 +45,42 @@ public class MiniProgramController {
         params.put("grant_type", "authorization_code");
         String response = HttpUtil.sendPost(constant.getAccess_url(), params);
         System.out.println("response: " + response);
-        return response;
+        SessionDTO sessionDTO = new SessionDTO();
+        JSONObject jsonObject = JSONObject.parseObject(response);
+        sessionDTO.setOpenid(jsonObject.getString("openid"));
+        sessionDTO.setSession_key(jsonObject.getString("session_key"));
+        return ResultDTO.ok(sessionDTO);
+    }
+
+    /**
+     * 获取小程序access token, 保存用户token到mysql数据库
+     *
+     * @return 请求响应
+     */
+    @RequestMapping(value = "/access_token", method = RequestMethod.GET)
+    public String accessToken() {
+        String token = "";
+        try {
+            StringBuilder params = new StringBuilder();
+            params.append("appid=").append(constant.getWx_app_id());
+            params.append("&secret=").append(constant.getWx_app_secret());
+            params.append("&grant_type=client_credential");
+            String request_url = constant.getAccess_token() + "?" + params;
+            System.out.println(request_url);
+            String response = HttpUtil.get(request_url);
+            System.out.println("get access token response: " + response);
+            token = JSONObject.parseObject(response).getString("access_token");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return token;
     }
 
     /**
      * 小程序获取session access_token, 保存用户token到mysql数据库
      *
      * @param loginDTO 小程序生成的code，和用户信息rawData
-     * @return access_token
+     * @return ResultDTO包含token
      */
     @RequestMapping(value = "/wx_login", method = RequestMethod.GET)
     public ResultDTO wxLogin(LoginDTO loginDTO) {
@@ -100,5 +130,71 @@ public class MiniProgramController {
         bluetoothDTO.setMsg(jsonObject.getJSONObject("msg"));
         return ResultDTO.ok(bluetoothDTO);
     }
+
+    /**
+     * 获取小程序码
+     * @param page 页面id
+     * @param scene 场景值
+     * @return 小程序码本地路径
+     */
+    @RequestMapping(value="/get_qrcode")
+    @ResponseBody
+    public  String getQRCode( String page, String scene) {
+        RestTemplate rest = new RestTemplate();
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        System.out.println("page：" + page);
+        System.out.println("scene：" + scene);
+        try {
+            //获取小程序码调用API
+            String url = constant.getUnlimited_qrcode() + "?access_token=" + constant.getAccess_token();
+            Map<String,Object> param = new HashMap();
+            param.put("page", page);//小程序页面
+            param.put("width", 430);
+            param.put("scene", scene);//参数
+            param.put("auto_color", true);
+            MultiValueMap<String, String> headers = new LinkedMultiValueMap();
+            HttpEntity requestEntity = new HttpEntity(param, headers);
+            ResponseEntity<byte[]> entity = rest.exchange(url, HttpMethod.POST, requestEntity, byte[].class, new Object[0]);
+            byte[] result = entity.getBody();
+            inputStream = new ByteArrayInputStream(result);
+            String fileName = UUID.randomUUID().toString().trim().replaceAll("-", "") + ".png";
+            //本地上传，路径填写自己项目路径
+            File file = new File(constant.getQrcode_path() + "/" + fileName);
+            System.out.println("filePath : " + file.getAbsolutePath());
+            outputStream = new FileOutputStream(file);
+            int len = 0;
+            byte[] buf = new byte[1024];
+            while ((len = inputStream.read(buf, 0, 1024)) != -1) {
+                outputStream.write(buf, 0, len);
+            }
+            outputStream.flush();
+            //保存到数据表
+
+            //返回本地图片路径
+
+            return file.getAbsolutePath();
+        } catch (Exception e) {
+            System.out.println("调用小程序生成微信永久二维码URL接口异常" + e);
+            e.printStackTrace();
+        } finally {
+            if(inputStream != null){
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(outputStream != null){
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
 
 }

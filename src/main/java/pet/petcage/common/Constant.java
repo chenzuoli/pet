@@ -22,6 +22,8 @@ public class Constant {
     private String wx_app_id;
     private String wx_app_secret;
     private String access_url;
+    private String access_token;
+    private String access_token_url;
     private String sms_url;
     private String sms_app_id;
     private String sms_app_secret;
@@ -29,4 +31,6 @@ public class Constant {
     private String decrypt_open_url;
     private String decrypt_close_url;
     private String acctoken;
+    private String unlimited_qrcode;
+    private String qrcode_path;
 }

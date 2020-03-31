@@ -9,19 +9,16 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class HttpUtil {
-    private static Logger logger = Logger.getLogger(HttpUtil.class);
 
     /**
      * description: 发送post请求
@@ -46,10 +43,10 @@ public class HttpUtil {
                     str = EntityUtils.toString(httpentity, "UTF-8");
                 }
             } catch (Exception e) {
-                logger.error("send post request to url: " + url + " with parameters: " + params + " exception!", e);
+                System.out.println("send post request to url: " + url + " with parameters: " + params + " exception!");
             }
         } catch (Exception e) {
-            logger.error("send post request to url: " + url + " with parameters: " + params + " exception!", e);
+            System.out.println("send post request to url: " + url + " with parameters: " + params + " exception!");
         }
         return str;
     }
@@ -66,12 +63,12 @@ public class HttpUtil {
     }
 
     /**
-     * description: post请求
-     * param: [urlStr, postData为json字符串]
-     * return: java.lang.String
+     * description: 发送https http请求
+     * param: [urlStr, postData为json字符串, requestMethod：请求方法（get post）]
+     * return: 响应结果
      * time: 2018/6/29 13:40
      */
-    public static String post(String urlStr, String postData) {
+    public static String request(String urlStr, String postData, String requestMethod) {
         String result = null;
         try {
             //创建连接
@@ -79,32 +76,92 @@ public class HttpUtil {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true);
             connection.setDoInput(true);
-            connection.setRequestMethod("POST");
+            connection.setRequestMethod(requestMethod);
             connection.setUseCaches(false);
             connection.setInstanceFollowRedirects(true);
             connection.setRequestProperty("Content-Type", "application/json; charset=gbk");
             connection.connect();
-            //POST请求
+            //请求
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-            out.write(postData.getBytes("UTF-8"));
+            out.write(postData.getBytes(StandardCharsets.UTF_8));
             out.flush();
             out.close();
             //读取响应
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String lines;
-            StringBuffer sb = new StringBuffer("");
+            StringBuffer sb = new StringBuffer();
             while ((lines = reader.readLine()) != null) {
-                lines = new String(lines.getBytes(), "utf-8");
+                lines = new String(lines.getBytes(), StandardCharsets.UTF_8);
                 sb.append(lines);
             }
             result = sb.toString();
-            logger.info(sb);
+            System.out.println(sb);
             reader.close();
             // 断开连接
             connection.disconnect();
         } catch (Exception e) {
-            logger.error("send post request to url: " + urlStr + " with parameters: " + postData + " exception!", e);
+            System.out.println("send " + requestMethod + " request to url: " + urlStr + " with parameters: " + postData + " exception!");
+            System.out.println(e);
         }
         return result;
+    }
+
+    /**
+     * get请求
+     * @param urlStr url
+     * @return response
+     */
+    public static String get(String urlStr) {
+        StringBuilder sb = new StringBuilder();
+        try {
+            URL url = new URL(urlStr);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            // 返回结果-字节输入流转换成字符输入流，控制台输出字符
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            System.out.println(sb);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 发送post请求
+     *
+     * @param urlStr url
+     * @param body   请求参数：json格式字符串
+     * @return 响应
+     */
+    public static String post(String urlStr, String body) {
+        StringBuilder sb = new StringBuilder();
+        try {
+            URL url = new URL(urlStr);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            // 设置Content-Type
+            connection.setRequestProperty("Content-Type", "application/json");
+            // 设置是否向httpUrlConnection输出，post请求设置为true，默认是false
+            connection.setDoOutput(true);
+
+            // 设置RequestBody
+            PrintWriter printWriter = new PrintWriter(connection.getOutputStream());
+            printWriter.write(body);
+            printWriter.flush();
+
+            // 返回结果-字节输入流转换成字符输入流，控制台输出字符
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            System.out.println(sb);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
     }
 }

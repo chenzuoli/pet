@@ -146,7 +146,7 @@ public class UserController {
             if (phone.equals(json.getString("phone")) && code.equals(json.getString("code"))) {
                 int flag = userService.updatePass(nick_name, pwd, phone);
                 result.put("code", flag > 0 ? "1" : "0");
-                result.put("msg", flag> 0 ? "更新成功" : "更新失败");
+                result.put("msg", flag > 0 ? "更新成功" : "更新失败");
             } else {
                 result.put("code", "0");
                 result.put("msg", "验证码错误");

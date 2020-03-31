@@ -48,21 +48,21 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Modifying
     @Query(value = "insert into user(phone, open_id, union_id, pwd, user_type, balance, valid_start_date, valid_end_date, token, country, province, city, avatar_url, gender, nick_name, `language`) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", nativeQuery = true)
     int addUser(String phone,
-                    String open_id,
-                    String union_id,
-                    String pwd,
-                    String user_type,
-                    String balance,
-                    String valid_start_date,
-                    String valid_end_date,
-                    String token,
-                    String country,
-                    String province,
-                    String city,
-                    String avatar_url,
-                    String gender,
-                    String nick_name,
-                    String language);
+                String open_id,
+                String union_id,
+                String pwd,
+                String user_type,
+                String balance,
+                String valid_start_date,
+                String valid_end_date,
+                String token,
+                String country,
+                String province,
+                String city,
+                String avatar_url,
+                String gender,
+                String nick_name,
+                String language);
 
     @Transactional
     @Modifying
