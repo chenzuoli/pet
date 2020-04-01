@@ -25,6 +25,7 @@ public class Pet {
     @GeneratedValue
     private String id;
     private String order_id;
+    private String contact;
     private String pet_type;
     private String variety;
     private String nick_name;

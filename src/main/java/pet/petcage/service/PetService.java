@@ -19,7 +19,7 @@ public class PetService extends BaseService<Pet> {
         return null;
     }
 
-    public int add_pet(String order_id, String pet_type, String variety, String nick_name, String gender, String age) {
-        return petRepository.add_pet(order_id, pet_type, variety, nick_name, gender, age);
+    public int add_pet(String order_id, String contact, String pet_type, String variety, String nick_name, String gender, String age) {
+        return petRepository.add_pet(order_id, contact, pet_type, variety, nick_name, gender, age);
     }
 }

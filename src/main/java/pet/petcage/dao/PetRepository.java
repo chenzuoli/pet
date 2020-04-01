@@ -16,6 +16,6 @@ import javax.transaction.Transactional;
 public interface PetRepository extends JpaRepository<Pet, String> {
     @Transactional
     @Modifying
-    @Query(value = "insert into pet(order_id, pet_type, variety, nick_name, gender, age) values(?1,?2,?3,?4,?5,?6)", nativeQuery = true)
-    int add_pet(String order_id, String pet_type, String variety, String nick_name, String gender, String age);
+    @Query(value = "insert into pet(order_id, contact, pet_type, variety, nick_name, gender, age) values(?1,?2,?3,?4,?5,?6,?7)", nativeQuery = true)
+    int add_pet(String order_id, String contact, String pet_type, String variety, String nick_name, String gender, String age);
 }

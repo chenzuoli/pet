@@ -21,11 +21,12 @@ public class PetController {
 
     @RequestMapping(value = "/add_pet", method = RequestMethod.POST)
     public int add_pet(@RequestParam("order_id") String order_id,
+                       @RequestParam("contact") String contact,
                        @RequestParam("pet_type") String pet_type,
                        String variety,
                        String nick_name,
                        String gender,
                        String age) {
-        return petService.add_pet(order_id, pet_type, variety, nick_name, gender, age);
+        return petService.add_pet(order_id, contact, pet_type, variety, nick_name, gender, age);
     }
 }
