@@ -13,6 +13,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class QRCode {
-    private String code;
+public class QRCodeDTO {
+    private String code_path;
 }

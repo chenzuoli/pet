@@ -15,5 +15,5 @@ import lombok.ToString;
 @ToString
 public class SessionDTO {
     private String session_key;
-    private String openid;
+    private String open_id;
 }

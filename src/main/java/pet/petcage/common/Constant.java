@@ -33,4 +33,6 @@ public class Constant {
     private String acctoken;
     private String unlimited_qrcode;
     private String qrcode_path;
+    private String service_id;
+    private String characteristic_id;
 }

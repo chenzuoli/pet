@@ -47,7 +47,7 @@ public class MiniProgramController {
         System.out.println("response: " + response);
         SessionDTO sessionDTO = new SessionDTO();
         JSONObject jsonObject = JSONObject.parseObject(response);
-        sessionDTO.setOpenid(jsonObject.getString("openid"));
+        sessionDTO.setOpen_id(jsonObject.getString("openid"));
         sessionDTO.setSession_key(jsonObject.getString("session_key"));
         return ResultDTO.ok(sessionDTO);
     }
@@ -133,13 +133,14 @@ public class MiniProgramController {
 
     /**
      * 获取小程序码
-     * @param page 页面id
+     *
+     * @param page  页面id
      * @param scene 场景值
      * @return 小程序码本地路径
      */
-    @RequestMapping(value="/get_qrcode")
+    @RequestMapping(value = "/get_qrcode")
     @ResponseBody
-    public  String getQRCode( String page, String scene) {
+    public ResultDTO getQRCode(String page, String scene) {
         RestTemplate rest = new RestTemplate();
         InputStream inputStream = null;
         OutputStream outputStream = null;
@@ -148,7 +149,7 @@ public class MiniProgramController {
         try {
             //获取小程序码调用API
             String url = constant.getUnlimited_qrcode() + "?access_token=" + constant.getAccess_token();
-            Map<String,Object> param = new HashMap();
+            Map<String, Object> param = new HashMap();
             param.put("page", page);//小程序页面
             param.put("width", 430);
             param.put("scene", scene);//参数
@@ -173,19 +174,21 @@ public class MiniProgramController {
 
             //返回本地图片路径
 
-            return file.getAbsolutePath();
+            QRCodeDTO qrCodeDTO = new QRCodeDTO();
+            qrCodeDTO.setCode_path(file.getAbsolutePath());
+            return ResultDTO.ok(qrCodeDTO);
         } catch (Exception e) {
             System.out.println("调用小程序生成微信永久二维码URL接口异常" + e);
             e.printStackTrace();
         } finally {
-            if(inputStream != null){
+            if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(outputStream != null){
+            if (outputStream != null) {
                 try {
                     outputStream.close();
                 } catch (IOException e) {
@@ -194,6 +197,16 @@ public class MiniProgramController {
             }
         }
         return null;
+    }
+
+    @RequestMapping(value = "/get_service_id")
+    public String getServiceId() {
+        return constant.getService_id();
+    }
+
+    @RequestMapping(value = "/get_characteristic_id")
+    public String getCharacteristicId() {
+        return constant.getCharacteristic_id();
     }
 
 
