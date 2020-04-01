@@ -164,6 +164,9 @@ public class UserController {
     @RequestMapping(value = "/getUserWallet", method = RequestMethod.POST)
     public User getUserWallet(@RequestParam("phone") String phone) {
         User userWallet = userService.getUserWallet(phone);
+        if (userWallet == null) {
+            return null;
+        }
         userWallet.setPhone("");
         userWallet.setOpen_id("");
         userWallet.setUnion_id("");
