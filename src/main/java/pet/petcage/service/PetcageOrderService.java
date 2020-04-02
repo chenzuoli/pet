@@ -21,8 +21,20 @@ public class PetcageOrderService extends BaseService<PetcageOrder> {
         return null;
     }
 
-    public List<PetcageOrder> getPetcageOrder(String phone) {
-        return petcageorderRepository.getPetcageOrders(phone);
+    public List<PetcageOrder> getPetcageOrderByPhone(String phone) {
+        return petcageorderRepository.getPetcageOrderByPhone(phone);
+    }
+
+    public List<PetcageOrder> getPetcageOrderByOpenId(String open_id) {
+        return petcageorderRepository.getPetcageOrderByOpenId(open_id);
+    }
+
+    public int add_order(String order_id, String phone, String open_id, boolean is_done, String device_id, String create_time) {
+        return petcageorderRepository.add_order(order_id, phone, open_id, is_done, device_id, create_time);
+    }
+
+    public int close_order(String end_time, String amount, String open_id, String order_id) {
+        return petcageorderRepository.close_order(end_time, amount, open_id, order_id);
     }
 
 }

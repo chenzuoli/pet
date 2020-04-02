@@ -27,6 +27,7 @@ public class Device {
     @GeneratedValue
     private String id; // 自增主键
     private String device_id; // 设备id
+    private String device_name; // 设备名称
     private String longitude; // 设备径度
     private String latitude; // 设备纬度
     private String kwh; // 设备电量余额

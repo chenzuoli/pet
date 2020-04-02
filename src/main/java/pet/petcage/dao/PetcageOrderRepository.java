@@ -1,10 +1,12 @@
 package pet.petcage.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pet.petcage.entity.PetcageOrder;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -15,6 +17,19 @@ import java.util.List;
 public interface PetcageOrderRepository extends JpaRepository<PetcageOrder, String> {
 
     @Query(value = "select * from petcage_order where phone = ?1 and is_done = false", nativeQuery = true)
-    List<PetcageOrder> getPetcageOrders(String phone);
+    List<PetcageOrder> getPetcageOrderByPhone(String phone);
+
+    @Query(value = "select * from petcage_order where open_id = ?1 and is_done = false", nativeQuery = true)
+    List<PetcageOrder> getPetcageOrderByOpenId(String open_id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "insert into petcage_order(order_id, phone, open_id, is_done, device_id, start_time) values(?1,?2,?3,?4,?5,?6)", nativeQuery = true)
+    int add_order(String order_id, String phone, String open_id, boolean is_done, String device_id, String start_time);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update petcage_order set id_done = true, end_time = ?1, amount = ?2 where open_id = ?3 and order_id = ?4", nativeQuery = true)
+    int close_order(String end_time, String amount, String open_id, String order_id);
 
 }

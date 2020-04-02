@@ -24,13 +24,13 @@ public class Pet {
     @Id
     @GeneratedValue
     private String id;
-    private String order_id;
-    private String contact;
-    private String pet_type;
-    private String variety;
-    private String nick_name;
-    private String gender;
-    private String age;
+    private String order_id; // 订单id
+    private String contact; // 宠物联系人
+    private String pet_type; // 宠物类型
+    private String variety; // 宠物品种
+    private String nick_name; // 宠物昵称
+    private String gender; // 宠物性别
+    private String age; // 宠物年龄
     private String create_time;
     private String update_time;
 }

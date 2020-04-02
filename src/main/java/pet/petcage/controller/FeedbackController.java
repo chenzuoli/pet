@@ -21,9 +21,10 @@ public class FeedbackController {
     /**
      * 添加信息反馈
      *
-     * @param phone            用户手机号
+     * @param open_id          用户open_id
      * @param feedback_type    反馈类型：订单反馈
      * @param feedback_content 反馈内容
+     * @param satisfy_grade    客户满意度
      * @param pictures         反馈图片
      * @param latitude         反馈时用户径度
      * @param longitude        反馈时用户纬度
@@ -31,16 +32,17 @@ public class FeedbackController {
      * @param description      反馈描述
      * @return 返回数值  > 0代表添加成功
      */
-    @RequestMapping(value = "/addFeedback", method = RequestMethod.POST)
-    int addFeedback(@RequestParam String phone,
-                    @RequestParam String feedback_type,
-                    @RequestParam String feedback_content,
-                    @RequestParam String pictures,
-                    @RequestParam String latitude,
-                    @RequestParam String longitude,
-                    @RequestParam String petcage_id,
-                    @RequestParam String description) {
-        return feedbackSerevice.addFeedback(phone, feedback_type, feedback_content, pictures,
+    @RequestMapping(value = "/add_feedback", method = RequestMethod.POST)
+    int addFeedback(@RequestParam("open_id") String open_id,
+                    @RequestParam("feedback_type") String feedback_type,
+                    @RequestParam("feedback_content") String feedback_content,
+                    @RequestParam("satisfy_grade") String satisfy_grade,
+                    @RequestParam("pictures") String pictures,
+                    @RequestParam("latitude") String latitude,
+                    @RequestParam("longitude") String longitude,
+                    @RequestParam("petcage_id") String petcage_id,
+                    @RequestParam("description") String description) {
+        return feedbackSerevice.addFeedback(open_id, feedback_type, feedback_content, satisfy_grade, pictures,
                 latitude, longitude, petcage_id, description);
     }
 

@@ -26,9 +26,10 @@ public class DeviceController {
 
     @RequestMapping("/addDevice")
     public int addDevice(@RequestParam String device_id,
+                         @RequestParam String device_name,
                          @RequestParam String latitude,
                          @RequestParam String longitude,
                          @RequestParam String kwh) {
-        return deviceService.addDevice(device_id, latitude, longitude, kwh);
+        return deviceService.addDevice(device_id, device_name, latitude, longitude, kwh);
     }
 }

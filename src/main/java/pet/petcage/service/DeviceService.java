@@ -25,8 +25,8 @@ public class DeviceService extends BaseService<Device> {
         return devRepo.deviceLocations();
     }
 
-    public int addDevice(String device_id, String latitude, String longitude, String kwh) {
-        return devRepo.addDevice(device_id, latitude, longitude, kwh);
+    public int addDevice(String device_id, String device_name, String latitude, String longitude, String kwh) {
+        return devRepo.addDevice(device_id, device_name, latitude, longitude, kwh);
     }
 
 }
