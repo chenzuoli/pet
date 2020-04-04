@@ -22,18 +22,22 @@ public class PetcageOrderService extends BaseService<PetcageOrder> {
     }
 
     public List<PetcageOrder> getPetcageOrderByPhone(String phone) {
+        System.out.println("params: " + phone);
         return petcageorderRepository.getPetcageOrderByPhone(phone);
     }
 
     public List<PetcageOrder> getPetcageOrderByOpenId(String open_id) {
+        System.out.println("params: " + open_id);
         return petcageorderRepository.getPetcageOrderByOpenId(open_id);
     }
 
     public int add_order(String order_id, String phone, String open_id, boolean is_done, String device_id, String create_time) {
+        System.out.println("params: " + order_id + "," + phone + "," + open_id + "," + is_done + "," + device_id + "," + create_time);
         return petcageorderRepository.add_order(order_id, phone, open_id, is_done, device_id, create_time);
     }
 
     public int close_order(String end_time, String amount, String open_id, String order_id) {
+        System.out.println("params: " + end_time + "," + amount + "," + open_id + "," + order_id);
         return petcageorderRepository.close_order(end_time, amount, open_id, order_id);
     }
 

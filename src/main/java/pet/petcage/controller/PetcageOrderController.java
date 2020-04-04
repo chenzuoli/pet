@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pet.petcage.common.Constant;
+import pet.petcage.dto.ResultDTO;
 import pet.petcage.entity.PetcageOrder;
 import pet.petcage.service.PetcageOrderService;
 
@@ -25,13 +26,15 @@ public class PetcageOrderController {
     PetcageOrderService petcageOrderService;
 
     @RequestMapping(value = "/get_petcage_order_by_phone", method = RequestMethod.POST)
-    public List<PetcageOrder> getPetcageOrderByPhone(@RequestParam("phone") String phone) {
-        return petcageOrderService.getPetcageOrderByPhone(phone);
+    public ResultDTO getPetcageOrderByPhone(@RequestParam("phone") String phone) {
+        List<PetcageOrder> orders = petcageOrderService.getPetcageOrderByPhone(phone);
+        return ResultDTO.ok(orders);
     }
 
     @RequestMapping(value = "/get_petcage_order_by_open_id", method = RequestMethod.POST)
-    public List<PetcageOrder> getPetcageOrderByOpenId(@RequestParam("open_id") String open_id) {
-        return petcageOrderService.getPetcageOrderByOpenId(open_id);
+    public ResultDTO getPetcageOrderByOpenId(@RequestParam("open_id") String open_id) {
+        List<PetcageOrder> orders = petcageOrderService.getPetcageOrderByOpenId(open_id);
+        return ResultDTO.ok(orders);
     }
 
     /**
@@ -48,6 +51,7 @@ public class PetcageOrderController {
                          @RequestParam("phone") String phone,
                          @RequestParam("open_id") String open_id,
                          @RequestParam("device_id") String device_id) {
+        System.out.println("params: " + order_id + "," + phone + "," + open_id + "," + device_id);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String curr_time = simpleDateFormat.format(new Date(System.currentTimeMillis()));
         return petcageOrderService.add_order(order_id, phone, open_id, false, device_id, curr_time);
@@ -66,6 +70,7 @@ public class PetcageOrderController {
     public int close_order(@RequestParam("amount") String amount,
                            @RequestParam("open_id") String open_id,
                            @RequestParam("order_id") String order_id) {
+        System.out.println("params: " + amount + "," + open_id + "," + order_id);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String curr_time = simpleDateFormat.format(new Date(System.currentTimeMillis()));
         return petcageOrderService.close_order(curr_time, amount, open_id, order_id);

@@ -22,7 +22,7 @@ public class FeedbackSerevice extends BaseService<Feedback> {
 
     /**
      * 添加反馈
-     *
+     * @param order_id         订单id
      * @param open_id          用户open_id
      * @param feedback_type    反馈类型：1订单反馈 2设备维修反馈 3系统反馈
      * @param feedback_content 反馈内容
@@ -33,9 +33,10 @@ public class FeedbackSerevice extends BaseService<Feedback> {
      * @param description      反馈描述
      * @return 插入成功与否
      */
-    public int addFeedback(String open_id, String feedback_type, String feedback_content, String satisfy_grade,
+    public int addFeedback(String order_id, String open_id, String feedback_type, String feedback_content, String satisfy_grade,
                            String pictures, String latitude, String longitude, String petcage_id, String description) {
-        return feedRepo.addFeedback(open_id, feedback_type, feedback_content, satisfy_grade, pictures,
+        System.out.println("params: " + open_id + "," + feedback_content + "," + feedback_content + "," + satisfy_grade + "," + pictures + "," + latitude + "," + longitude + "," + petcage_id + "," + description);
+        return feedRepo.addFeedback(order_id, open_id, feedback_type, feedback_content, satisfy_grade, pictures,
                 latitude, longitude, petcage_id, description);
     }
 

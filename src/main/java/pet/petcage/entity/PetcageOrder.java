@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 /**
  * Created by user chenzuoli on 2020/3/22 16:23
- * description: 日志表
+ * description: 订单表
  */
 @Data
 @NoArgsConstructor

@@ -26,6 +26,7 @@ public class DeviceService extends BaseService<Device> {
     }
 
     public int addDevice(String device_id, String device_name, String latitude, String longitude, String kwh) {
+        System.out.println("params: " + device_id + "," + device_name + "," + latitude + "," + longitude + "," + kwh);
         return devRepo.addDevice(device_id, device_name, latitude, longitude, kwh);
     }
 

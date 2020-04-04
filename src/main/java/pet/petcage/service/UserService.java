@@ -20,28 +20,34 @@ public class UserService extends BaseService<User> {
 
     @Override
     public User getById(String id) {
+        System.out.println("params: " + id);
         return repo.findUserByPhone(id);
     }
 
     public boolean loginCheck(String phone, String pwd) {
+        System.out.println("params: " + phone + "," + pwd);
         List<User> users = repo.loginCheck(phone, pwd);
         System.out.println(users);
         return users.size() != 0;
     }
 
     public int updatePass(String nick_name, String pwd, String phone) {
+        System.out.println("params: " + nick_name + "," + pwd  + "," + phone);
         return repo.updatePass(nick_name, pwd, phone);
     }
 
     public User getUserWallet(String phone) {
+        System.out.println("params: " + phone);
         return repo.getUserWallet(phone);
     }
 
     public List<User> getUserByOpenid(String open_id) {
+        System.out.println("params: " + open_id);
         return repo.getUserByOpenid(open_id);
     }
 
     public int addUser(User user) {
+        System.out.println("parmas: " + user);
         return repo.addUser(
                 user.getPhone(),
                 user.getOpen_id(),
@@ -63,6 +69,7 @@ public class UserService extends BaseService<User> {
     }
 
     public int updateUser(User user) {
+        System.out.println("params: " + user);
         return repo.updateUser(
                 user.getUnion_id(),
                 user.getToken(),
@@ -78,6 +85,7 @@ public class UserService extends BaseService<User> {
     }
 
     public List<User> getUserByToken(String token) {
+        System.out.println("params: " + token);
         return repo.getUserByToken(token);
     }
 

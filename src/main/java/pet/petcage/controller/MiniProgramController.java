@@ -65,7 +65,7 @@ public class MiniProgramController {
             params.append("appid=").append(constant.getWx_app_id());
             params.append("&secret=").append(constant.getWx_app_secret());
             params.append("&grant_type=client_credential");
-            String request_url = constant.getAccess_token() + "?" + params;
+            String request_url = constant.getAccess_token_url() + "?" + params;
             System.out.println(request_url);
             String response = HttpUtil.get(request_url);
             System.out.println("get access token response: " + response);
