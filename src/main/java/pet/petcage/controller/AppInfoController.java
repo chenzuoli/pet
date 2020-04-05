@@ -2,6 +2,7 @@ package pet.petcage.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -12,21 +13,28 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import pet.petcage.common.Constant;
 import pet.petcage.dto.*;
+import pet.petcage.entity.AppInfo;
 import pet.petcage.entity.User;
+import pet.petcage.service.AppInfoService;
 import pet.petcage.service.UserService;
 import pet.petcage.util.HttpUtil;
+import pet.petcage.util.QiNiuCludeUtil;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Created by user chenzuoli on 2020/4/5 18:57
+ * description: 微信小程序信息控制器
+ */
 @RestController
-public class MiniProgramController {
-
+public class AppInfoController {
     @Autowired
     Constant constant;
-
+    @Autowired
+    AppInfoService appInfoService;
     @Autowired
     UserService userService;
 
@@ -111,26 +119,6 @@ public class MiniProgramController {
         return ResultDTO.ok(data);
     }
 
-
-    /**
-     * 获取蓝牙设备指令集
-     *
-     * @param dvname 设备名称
-     * @return 设备指令集
-     */
-    @RequestMapping(value = "/get_device_bluetooth_command", method = RequestMethod.POST)
-    public ResultDTO getDeviceBluetoothCommand(@RequestParam("dvname") String dvname) {
-        HashMap<String, String> params = new HashMap<>();
-        params.put("dvname", dvname);
-        params.put("acctoken", constant.getAcctoken());
-        String response = HttpUtil.sendPost(constant.getDev_command_list(), params);
-        BluetoothDTO bluetoothDTO = new BluetoothDTO();
-        JSONObject jsonObject = JSONObject.parseObject(response);
-        bluetoothDTO.setSta(jsonObject.getString("sta"));
-        bluetoothDTO.setMsg(jsonObject.getJSONObject("msg"));
-        return ResultDTO.ok(bluetoothDTO);
-    }
-
     /**
      * 获取小程序码
      *
@@ -146,9 +134,11 @@ public class MiniProgramController {
         OutputStream outputStream = null;
         System.out.println("page：" + page);
         System.out.println("scene：" + scene);
+        QRCodeDTO qrCodeDTO = new QRCodeDTO();
         try {
             //获取小程序码调用API
-            String url = constant.getUnlimited_qrcode() + "?access_token=" + constant.getAccess_token();
+            String url = constant.getUnlimited_qrcode() + "?access_token=" + this.accessToken();
+            System.out.println("get qrcode url: " + url);
             Map<String, Object> param = new HashMap();
             param.put("page", page);//小程序页面
             param.put("width", 430);
@@ -172,11 +162,9 @@ public class MiniProgramController {
             outputStream.flush();
             //保存到数据表
 
-            //返回本地图片路径
+            //返回图片路径
 
-            QRCodeDTO qrCodeDTO = new QRCodeDTO();
             qrCodeDTO.setCode_path(file.getAbsolutePath());
-            return ResultDTO.ok(qrCodeDTO);
         } catch (Exception e) {
             System.out.println("调用小程序生成微信永久二维码URL接口异常" + e);
             e.printStackTrace();
@@ -196,18 +184,116 @@ public class MiniProgramController {
                 }
             }
         }
-        return null;
+        return ResultDTO.ok(qrCodeDTO);
     }
 
-    @RequestMapping(value = "/get_service_id")
-    public String getServiceId() {
-        return constant.getService_id();
+    /**
+     * 获取小程序码
+     *
+     * @param scene 参数
+     * @param page  页面
+     * @return 小程序码七牛云访问路径
+     */
+    @RequestMapping(value = "/get_mini_qrcode", method = RequestMethod.POST)
+    public ResultDTO getMiniQrCode(String scene, String page) {
+        RestTemplate rest = new RestTemplate();
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        String visit_url = "";
+        try {
+            String url = constant.getUnlimited_qrcode() + "?access_token=" + this.accessToken();
+            Map<String, Object> param = new HashMap<>();
+            param.put("scene", scene);
+            param.put("page", page);
+            param.put("width", 430);
+            param.put("auto_color", false);
+            Map<String, Object> line_color = new HashMap<>();
+            line_color.put("r", 0);
+            line_color.put("g", 0);
+            line_color.put("b", 0);
+            param.put("line_color", line_color);
+            System.out.println("调用生成微信URL接口传参:" + param);
+            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+            HttpEntity requestEntity = new HttpEntity(param, headers);
+            ResponseEntity<byte[]> entity = rest.exchange(url, HttpMethod.POST, requestEntity, byte[].class, new Object[0]);
+            System.out.println("调用小程序生成微信永久小程序码URL接口返回结果:" + entity.getBody());
+            byte[] result = entity.getBody();
+            System.out.println(Base64.encodeBase64String(result));
+            inputStream = new ByteArrayInputStream(result);
+
+            String fileName = UUID.randomUUID().toString().trim().replaceAll("-", "") + ".png";
+            //本地上传，路径填写自己项目路径
+            File file = new File(constant.getQrcode_path() + "/" + fileName);
+            System.out.println("filePath : " + file.getAbsolutePath());
+
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            outputStream = new FileOutputStream(file);
+            int len = 0;
+            byte[] buf = new byte[1024];
+            while ((len = inputStream.read(buf, 0, 1024)) != -1) {
+                outputStream.write(buf, 0, len);
+            }
+            outputStream.flush();
+
+            // 上传小程序码到七牛云
+            QiNiuCludeUtil.uploadFile(file.getAbsolutePath(),
+                    constant.getQiniu_access_key(),
+                    constant.getQiniu_secret_key(),
+                    constant.getQiniu_bucket_name());
+            visit_url = QiNiuCludeUtil.getFileUrl(file.getAbsolutePath(),
+                    constant.getQiniu_access_key(),
+                    constant.getQiniu_secret_key());
+        } catch (Exception e) {
+            System.out.println("调用小程序生成微信永久小程序码URL接口异常");
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return ResultDTO.ok(visit_url);
+    }
+    /**
+     * 获取小程序服务条例与隐私协议
+     *
+     * @return ResultDTO
+     */
+    @RequestMapping(value = "/get_service_private_content", method = RequestMethod.POST)
+    public ResultDTO getServicePrivateContent() {
+        AppInfo appInfo = appInfoService.getServicePrivateContent();
+        if (appInfo == null) {
+            return ResultDTO.fail("未获取到小程序信息");
+        } else {
+            return ResultDTO.ok(appInfo);
+        }
     }
 
-    @RequestMapping(value = "/get_characteristic_id")
-    public String getCharacteristicId() {
-        return constant.getCharacteristic_id();
+    /**
+     * 更新小程序版本号
+     *
+     * @param version 小程序版本号
+     * @return ResultDTO
+     */
+    @RequestMapping(value = "/update_version", method = RequestMethod.POST)
+    public ResultDTO updateVersion(@RequestParam("version") String version) {
+        int i = appInfoService.updateVersion(version);
+        if (i > 0) {
+            return ResultDTO.ok(i);
+        } else {
+            return ResultDTO.fail("更新失败");
+        }
     }
-
-
 }

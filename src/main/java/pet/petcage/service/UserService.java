@@ -32,7 +32,7 @@ public class UserService extends BaseService<User> {
     }
 
     public int updatePass(String nick_name, String pwd, String phone) {
-        System.out.println("params: " + nick_name + "," + pwd  + "," + phone);
+        System.out.println("params: " + nick_name + "," + pwd + "," + phone);
         return repo.updatePass(nick_name, pwd, phone);
     }
 
