@@ -22,6 +22,7 @@ import pet.petcage.util.QiNiuCludeUtil;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -296,4 +297,35 @@ public class AppInfoController {
             return ResultDTO.fail("更新失败");
         }
     }
+
+    @RequestMapping(value = "/get_app_version", method = RequestMethod.POST)
+    public ResultDTO getAppVersion() {
+        List<String> version = appInfoService.getAppVersion();
+        if (version.size() == 0) {
+            return ResultDTO.fail("获取app版本号失败");
+        } else {
+            return ResultDTO.ok(version.get(0));
+        }
+    }
+
+    @RequestMapping(value = "get_service_content", method = RequestMethod.POST)
+    public ResultDTO getServiceContent() {
+        String serviceContent = appInfoService.getServiceContent();
+        if (serviceContent == null) {
+            return ResultDTO.fail("获取服务条例失败");
+        } else  {
+            return ResultDTO.ok(serviceContent);
+        }
+    }
+
+    @RequestMapping(value = "get_private_content", method = RequestMethod.POST)
+    public ResultDTO getPrivateContent() {
+        String privateContent = appInfoService.getPrivateContent();
+        if (privateContent == null) {
+            return ResultDTO.fail("获取隐私协议失败");
+        } else  {
+            return ResultDTO.ok(privateContent);
+        }
+    }
+
 }

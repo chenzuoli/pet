@@ -36,9 +36,9 @@ public class UserService extends BaseService<User> {
         return repo.updatePass(nick_name, pwd, phone);
     }
 
-    public User getUserWallet(String phone) {
-        System.out.println("params: " + phone);
-        return repo.getUserWallet(phone);
+    public User getUserWallet(String open_id) {
+        System.out.println("params: " + open_id);
+        return repo.getUserWallet(open_id);
     }
 
     public List<User> getUserByOpenid(String open_id) {

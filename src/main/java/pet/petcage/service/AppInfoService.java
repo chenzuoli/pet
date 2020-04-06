@@ -7,6 +7,7 @@ import pet.petcage.entity.AppInfo;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by user chenzuoli on 2020/4/5 18:54
@@ -31,5 +32,17 @@ public class AppInfoService extends BaseService<AppInfo> {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String current_time = simpleDateFormat.format(new Date(System.currentTimeMillis()));
         return appInfoRepository.updateVersion(version, current_time);
+    }
+
+    public List<String> getAppVersion() {
+        return appInfoRepository.getAppVersion();
+    }
+
+    public String getServiceContent() {
+        return appInfoRepository.getServiceContent();
+    }
+
+    public String getPrivateContent() {
+        return appInfoRepository.getPrivateContent();
     }
 }

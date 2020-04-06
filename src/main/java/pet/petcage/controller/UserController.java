@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pet.petcage.common.Constant;
+import pet.petcage.dto.ResultDTO;
 import pet.petcage.entity.User;
 import pet.petcage.service.UserService;
 
@@ -158,20 +159,19 @@ public class UserController {
     /**
      * 获取用户钱包信息
      *
-     * @param phone 用户手机号
+     * @param open_id 用户open_id
      * @return 返回用户钱包信息
      */
-    @RequestMapping(value = "/getUserWallet", method = RequestMethod.POST)
-    public User getUserWallet(@RequestParam("phone") String phone) {
-        User userWallet = userService.getUserWallet(phone);
+    @RequestMapping(value = "/get_user_wallet", method = RequestMethod.POST)
+    public ResultDTO getUserWallet(@RequestParam("open_id") String open_id) {
+        User userWallet = userService.getUserWallet(open_id);
         if (userWallet == null) {
-            return null;
+            return ResultDTO.fail("获取用户钱包失败");
         }
         userWallet.setPhone("");
-        userWallet.setOpen_id("");
         userWallet.setUnion_id("");
         userWallet.setPwd("");
-        return userWallet;
+        return ResultDTO.ok(userWallet);
     }
 
     @RequestMapping(value = "/getUserByOpenid", method = RequestMethod.POST)
