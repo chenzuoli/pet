@@ -41,7 +41,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query(value = "select * from user where open_id = ?1", nativeQuery = true)
     User getUserWallet(String open_id);
 
-    @Query(value = "select * from user where open_id = ?1", nativeQuery = true)
+    @Query(value = "select * from user where open_id = ?1 order by create_time desc limit 1", nativeQuery = true)
     List<User> getUserByOpenid(String open_id);
 
     @Transactional

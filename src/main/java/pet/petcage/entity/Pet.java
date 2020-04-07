@@ -30,7 +30,8 @@ public class Pet {
     private String variety; // 宠物品种
     private String nick_name; // 宠物昵称
     private String gender; // 宠物性别
-    private String age; // 宠物年龄
+    private String birthday; // 宠物出生日期
+    private String avatar_url; // 宠物头像
     private String create_time;
     private String update_time;
 }

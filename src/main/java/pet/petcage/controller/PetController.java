@@ -26,7 +26,8 @@ public class PetController {
                        String variety,
                        String nick_name,
                        String gender,
-                       String age) {
-        return petService.add_pet(order_id, contact, pet_type, variety, nick_name, gender, age);
+                       String birthday,
+                       String avatar_url) {
+        return petService.add_pet(order_id, contact, pet_type, variety, nick_name, gender, birthday, avatar_url);
     }
 }

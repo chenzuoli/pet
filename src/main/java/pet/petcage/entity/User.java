@@ -40,6 +40,7 @@ public class User {
     private String gender; // 性别
     private String nick_name; // 昵称
     private String language; // 语言
+    private String birthday; // 出生日期
     private String create_time; // 创建时间
     private String update_time; // 更新时间
 }

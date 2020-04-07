@@ -174,9 +174,14 @@ public class UserController {
         return ResultDTO.ok(userWallet);
     }
 
-    @RequestMapping(value = "/getUserByOpenid", method = RequestMethod.POST)
-    public List<User> getUserByOpenid(@RequestParam("open_id") String open_id) {
-        return userService.getUserByOpenid(open_id);
+    @RequestMapping(value = "/get_user_by_open_id", method = RequestMethod.POST)
+    public ResultDTO getUserByOpenid(@RequestParam("open_id") String open_id) {
+        List<User> users = userService.getUserByOpenid(open_id);
+        if (users.size() == 0) {
+            return ResultDTO.fail("未查询到user");
+        } else  {
+            return ResultDTO.ok(users.get(0));
+        }
     }
 
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
