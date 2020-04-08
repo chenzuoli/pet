@@ -17,5 +17,6 @@ public interface PetRepository extends JpaRepository<Pet, String> {
     @Transactional
     @Modifying
     @Query(value = "insert into pet(order_id, contact, pet_type, variety, nick_name, gender, birthday, avatar_url) values(?1,?2,?3,?4,?5,?6,?7, ?8)", nativeQuery = true)
-    int add_pet(String order_id, String contact, String pet_type, String variety, String nick_name, String gender, String birthday, String avatar_url);
+    int addPet(String order_id, String contact, String pet_type, String variety, String nick_name, String gender, String birthday, String avatar_url);
+
 }

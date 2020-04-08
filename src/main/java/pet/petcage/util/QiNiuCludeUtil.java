@@ -9,9 +9,6 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import pet.petcage.common.Constant;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -21,10 +18,7 @@ import java.net.URLEncoder;
  * Created by user chenzuoli on 2020/4/5 10:37
  * description: 七牛云工具类
  */
-@Component
 public class QiNiuCludeUtil {
-    @Autowired
-    static Constant constant;
 
     /**
      * 上传文件至七牛云
@@ -70,9 +64,8 @@ public class QiNiuCludeUtil {
      * @param secretKey 七牛云secretkey
      * @return 访问地址
      */
-    public static String getFileUrl(String fileName, String accessKey, String secretKey) {
+    public static String getFileUrl(String domainOfBucket, String fileName, String accessKey, String secretKey) {
         System.out.println("get file url params, file name: " + fileName + ",access key: " + accessKey + ", secret key: " + secretKey);
-        String domainOfBucket = "http://devtools.qiniu.com";
         String encodedFileName = null;
         String finalUrl = null;
         try {

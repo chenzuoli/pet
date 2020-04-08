@@ -1,7 +1,11 @@
 package pet.petcage.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pet.petcage.common.Constant;
+import pet.petcage.dto.ResultDTO;
+import pet.petcage.util.QiNiuCludeUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -13,44 +17,56 @@ import java.io.IOException;
  */
 @RestController
 public class FileController {
+    @Autowired
+    Constant constant;
+
     @ResponseBody
-    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-    public String upload(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
-        System.out.println("执行upload");
+    @RequestMapping(value = "/upload_file", method = RequestMethod.POST)
+    public ResultDTO upload(HttpServletRequest request, @RequestParam(value = "avatarFile", required = false) MultipartFile file) throws IOException {
+        System.out.println("execute upload file...");
         request.setCharacterEncoding("UTF-8");
-        System.out.println("执行图片上传");
-        String user = request.getParameter("user");
-        System.out.println("user:" + user);
+        String visit_url = "";
         if (!file.isEmpty()) {
-            System.out.println("成功获取照片");
+            System.out.println("success get the file.");
             String fileName = file.getOriginalFilename();
             String path = null;
             String type = null;
             type = fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()) : null;
-            System.out.println("图片初始名称为：" + fileName + " 类型为：" + type);
+            System.out.println("initialize file name as：" + fileName + ", type is：" + type);
             if (type != null) {
                 if ("GIF".equals(type.toUpperCase()) || "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
-                    // 项目在容器中实际发布运行的根路径
-                    String realPath = request.getSession().getServletContext().getRealPath("/");
                     // 自定义的文件名称
                     String trueFileName = String.valueOf(System.currentTimeMillis()) + fileName;
                     // 设置存放图片文件的路径
-                    path = realPath + "/uploads/" + trueFileName;
-                    System.out.println("存放图片文件的路径:" + path);
+                    path = constant.getAvatar_path() + "/" + trueFileName;
+                    System.out.println("server local file path:" + path);
                     file.transferTo(new File(path));
-                    System.out.println("文件成功上传到指定目录下");
+                    System.out.println("success upload file to the server.");
+
+                    // 文件上传到七牛云
+                    // 上传小程序码到七牛云
+                    System.out.println("upload the file to the qiniu cloud.");
+                    QiNiuCludeUtil.uploadFile(path,
+                            constant.getQiniu_access_key(),
+                            constant.getQiniu_secret_key(),
+                            constant.getQiniu_bucket_name());
+                    visit_url = QiNiuCludeUtil.getFileUrl(
+                            constant.getQiniu_domain_of_bucket(),
+                            path,
+                            constant.getQiniu_access_key(),
+                            constant.getQiniu_secret_key());
                 } else {
                     System.out.println("不是我们想要的文件类型,请按要求重新上传");
-                    return "error";
+                    return ResultDTO.fail("error");
                 }
             } else {
                 System.out.println("文件类型为空");
-                return "error";
+                return ResultDTO.fail("error");
             }
         } else {
             System.out.println("没有找到相对应的文件");
-            return "error";
+            return ResultDTO.fail("error");
         }
-        return "success";
+        return ResultDTO.ok(visit_url);
     }
 }

@@ -19,8 +19,9 @@ public class PetService extends BaseService<Pet> {
         return null;
     }
 
-    public int add_pet(String order_id, String contact, String pet_type, String variety, String nick_name, String gender, String birthday, String avatar_url) {
+    public int addPet(String order_id, String contact, String pet_type, String variety, String nick_name, String gender, String birthday, String avatar_url) {
         System.out.println("params: " + order_id + "," + contact + "," + pet_type + "," + variety + "," + nick_name + "," + gender + "," + birthday + "," + avatar_url);
-        return petRepository.add_pet(order_id, contact, pet_type, variety, nick_name, gender, birthday, avatar_url);
+        return petRepository.addPet(order_id, contact, pet_type, variety, nick_name, gender, birthday, avatar_url);
     }
+
 }

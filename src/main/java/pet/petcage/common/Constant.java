@@ -37,4 +37,6 @@ public class Constant {
     private String qiniu_access_key; // 七牛云ak
     private String qiniu_secret_key; // 七牛云sk
     private String qiniu_bucket_name; // 七牛云bucket名称
+    private String qiniu_domain_of_bucket; // 七牛云域名映射
+    private String avatar_path; // 头像本地存放路径
 }
