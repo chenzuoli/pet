@@ -32,6 +32,7 @@ public class UserPet {
     private String gender; // 宠物性别
     private String birthday; // 宠物出生日期
     private String avatar_url; // 宠物头像
+    private String description; // 描述
     private String create_time;
     private String update_time;
 }

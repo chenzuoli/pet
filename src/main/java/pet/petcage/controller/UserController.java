@@ -179,7 +179,7 @@ public class UserController {
         List<User> users = userService.getUserByOpenid(open_id);
         if (users.size() == 0) {
             return ResultDTO.fail("未查询到user");
-        } else  {
+        } else {
             return ResultDTO.ok(users.get(0));
         }
     }

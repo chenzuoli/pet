@@ -57,7 +57,7 @@ public class QiNiuCludeUtil {
     }
 
     /**
-     * 获取七牛云空间中的图片url地址，默认一小时有效
+     * 私有空间获取文件url，获取七牛云空间中的图片url地址，默认一小时有效
      *
      * @param fileName  文件名
      * @param accessKey 七牛云accesskey
@@ -78,6 +78,19 @@ public class QiNiuCludeUtil {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        return finalUrl;
+    }
+
+    /**
+     * 公开空间获取图片url
+     *
+     * @param domainOfBucket
+     * @param fileName
+     * @return
+     */
+    public static String getFileUrl(String domainOfBucket, String fileName) {
+        String finalUrl = String.format("%s/%s", domainOfBucket, fileName);
+        System.out.println(finalUrl);
         return finalUrl;
     }
 

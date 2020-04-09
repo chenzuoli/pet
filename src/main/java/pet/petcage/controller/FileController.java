@@ -50,11 +50,16 @@ public class FileController {
                             constant.getQiniu_access_key(),
                             constant.getQiniu_secret_key(),
                             constant.getQiniu_bucket_name());
+//                    visit_url = QiNiuCludeUtil.getFileUrl(
+//                            constant.getQiniu_domain_of_bucket(),
+//                            path,
+//                            constant.getQiniu_access_key(),
+//                            constant.getQiniu_secret_key());
+                    // 公开空间
                     visit_url = QiNiuCludeUtil.getFileUrl(
                             constant.getQiniu_domain_of_bucket(),
-                            path,
-                            constant.getQiniu_access_key(),
-                            constant.getQiniu_secret_key());
+                            path
+                    );
                 } else {
                     System.out.println("不是我们想要的文件类型,请按要求重新上传");
                     return ResultDTO.fail("error");

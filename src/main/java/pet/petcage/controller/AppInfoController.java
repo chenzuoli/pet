@@ -243,11 +243,17 @@ public class AppInfoController {
                     constant.getQiniu_access_key(),
                     constant.getQiniu_secret_key(),
                     constant.getQiniu_bucket_name());
+            //私有空间
+//            visit_url = QiNiuCludeUtil.getFileUrl(
+//                    constant.getQiniu_domain_of_bucket(),
+//                    file.getAbsolutePath(),
+//                    constant.getQiniu_access_key(),
+//                    constant.getQiniu_secret_key());
+            // 公开空间
             visit_url = QiNiuCludeUtil.getFileUrl(
                     constant.getQiniu_domain_of_bucket(),
-                    file.getAbsolutePath(),
-                    constant.getQiniu_access_key(),
-                    constant.getQiniu_secret_key());
+                    file.getAbsolutePath()
+            );
         } catch (Exception e) {
             System.out.println("调用小程序生成微信永久小程序码URL接口异常");
             e.printStackTrace();
@@ -318,11 +324,17 @@ public class AppInfoController {
                     constant.getQiniu_access_key(),
                     constant.getQiniu_secret_key(),
                     constant.getQiniu_bucket_name());
+            //私有空间
+//            visit_url = QiNiuCludeUtil.getFileUrl(
+//                    constant.getQiniu_domain_of_bucket(),
+//                    file.getAbsolutePath(),
+//                    constant.getQiniu_access_key(),
+//                    constant.getQiniu_secret_key());
+            // 公开空间
             visit_url = QiNiuCludeUtil.getFileUrl(
                     constant.getQiniu_domain_of_bucket(),
-                    file.getAbsolutePath(),
-                    constant.getQiniu_access_key(),
-                    constant.getQiniu_secret_key());
+                    file.getAbsolutePath()
+            );
         } catch (Exception e) {
             System.out.println("调用小程序生成微信永久小程序码URL接口异常");
             e.printStackTrace();

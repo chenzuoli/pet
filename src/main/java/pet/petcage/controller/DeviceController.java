@@ -71,6 +71,7 @@ public class DeviceController {
 
     /**
      * 获取蓝牙设备服务id
+     *
      * @return 服务id
      */
     @RequestMapping(value = "/get_service_id")
@@ -80,6 +81,7 @@ public class DeviceController {
 
     /**
      * 获取蓝牙设备特征id
+     *
      * @return 特征id
      */
     @RequestMapping(value = "/get_characteristic_id")

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import pet.petcage.dao.UserPetRepository;
 import pet.petcage.entity.UserPet;
 
+import java.util.List;
+
 /**
  * Created by user chenzuoli on 2020/4/8 15:57
  * description: 用户宠物表服务
@@ -19,8 +21,23 @@ public class UserPetService extends BaseService<UserPet> {
         return null;
     }
 
-    public int updateUserPet(String contact, String pet_type, String variety, String nick_name, String gender, String birthday, String avatar_url, String open_id) {
-        System.out.println("params: " + contact + "," + pet_type + "," + variety + "," + nick_name + "," + gender + "," + birthday + "," + avatar_url + "," + open_id);
-        return userPetRepository.updateUserPet(contact, pet_type, variety, nick_name, gender, birthday, avatar_url, open_id);
+    public int updateUserPet(String contact, String pet_type, String variety, String nick_name, String gender, String birthday, String avatar_url, String description, String id) {
+        System.out.println("params: " + contact + "," + pet_type + "," + variety + "," + nick_name + "," + gender + "," + birthday + "," + avatar_url + "," + description + "," + id);
+        return userPetRepository.updateUserPet(contact, pet_type, variety, nick_name, gender, birthday, avatar_url, description, id);
+    }
+
+    public List<UserPet> getUserPets(String open_id) {
+        System.out.println("params: " + open_id);
+        return userPetRepository.getUserPets(open_id);
+    }
+
+    public UserPet getPetInfo(String id) {
+        System.out.println("params: " + id);
+        return userPetRepository.getPetInfo(id);
+    }
+
+    public int addUserPet(String open_id, String contact, String pet_type, String variety, String nick_name, String gender, String birthday, String avatar_url, String description) {
+        System.out.println("params: " + open_id + "," + contact + "," + pet_type + "," + variety + "," + nick_name + "," + gender + "," + birthday + "," + avatar_url + "," + description);
+        return userPetRepository.addUserPet(open_id, contact, pet_type, variety, nick_name, gender, birthday, avatar_url, description);
     }
 }

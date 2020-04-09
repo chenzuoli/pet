@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pet.petcage.common.Constant;
-import pet.petcage.dto.ResultDTO;
 import pet.petcage.service.PetService;
 
 /**
@@ -31,7 +30,6 @@ public class PetController {
                        String avatar_url) {
         return petService.addPet(order_id, contact, pet_type, variety, nick_name, gender, birthday, avatar_url);
     }
-
 
 
 }
