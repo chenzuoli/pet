@@ -99,9 +99,18 @@ public class UserPetController {
         if (result > 0) {
             return ResultDTO.ok(result);
         } else {
-            return ResultDTO.fail("添加宠物成功。");
+            return ResultDTO.fail("添加宠物失败。");
         }
     }
 
+    @RequestMapping(value = "/delete_user_pet", method = RequestMethod.POST)
+    public ResultDTO deleteUserPet(@RequestParam("id") String id) {
+        int result = userPetService.deleteUserPet(id);
+        if (result > 0) {
+            return ResultDTO.ok(result);
+        } else {
+            return ResultDTO.fail("删除宠物失败。");
+        }
+    }
 
 }

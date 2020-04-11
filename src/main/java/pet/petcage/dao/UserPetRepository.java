@@ -32,4 +32,9 @@ public interface UserPetRepository extends JpaRepository<UserPet, String> {
     @Modifying
     @Query(value = "insert into user_pet(open_id, contact, pet_type, variety, nick_name, gender, birthday, avatar_url, description) values(?1,?2,?3,?4,?5,?6,?7,?8,?9)", nativeQuery = true)
     int addUserPet(String open_id, String contact, String pet_type, String variety, String nick_name, String gender, String birthday, String avatar_url, String description);
+
+    @Transactional
+    @Modifying
+    @Query(value = "delete from user_pet where id = ?1", nativeQuery = true)
+    int deleteUserPet(String id);
 }

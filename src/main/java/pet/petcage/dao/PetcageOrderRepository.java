@@ -32,4 +32,10 @@ public interface PetcageOrderRepository extends JpaRepository<PetcageOrder, Stri
     @Query(value = "update petcage_order set is_done = true, end_time = ?1, amount = ?2 where open_id = ?3 and order_id = ?4", nativeQuery = true)
     int close_order(String end_time, String amount, String open_id, String order_id);
 
+    @Query(value = "select * from petcage_order where open_id = ?1", nativeQuery = true)
+    List<PetcageOrder> getPetcageOrder(String open_id);
+
+    @Query(value = "select * from petcage_order where device_id = ?1 and is_done = false", nativeQuery = true)
+    List<PetcageOrder> getPetcageStatus(String device_id);
+
 }

@@ -40,4 +40,9 @@ public class UserPetService extends BaseService<UserPet> {
         System.out.println("params: " + open_id + "," + contact + "," + pet_type + "," + variety + "," + nick_name + "," + gender + "," + birthday + "," + avatar_url + "," + description);
         return userPetRepository.addUserPet(open_id, contact, pet_type, variety, nick_name, gender, birthday, avatar_url, description);
     }
+
+    public int deleteUserPet(String id) {
+        System.out.println("params: " + id);
+        return userPetRepository.deleteUserPet(id);
+    }
 }

@@ -76,5 +76,31 @@ public class PetcageOrderController {
         return petcageOrderService.close_order(curr_time, amount, open_id, order_id);
     }
 
+    /**
+     * 获取用户所有服务订单
+     *
+     * @param open_id 用户open_id
+     * @return ResultDTO，data中包含PetcageOrder数组
+     */
+    @RequestMapping(value = "/get_petcage_order", method = RequestMethod.POST)
+    public ResultDTO getPetcageOrder(@RequestParam("open_id") String open_id) {
+        List<PetcageOrder> petcageOrder = petcageOrderService.getPetcageOrder(open_id);
+        if (petcageOrder.size() == 0) {
+            return ResultDTO.fail("查询无结果");
+        } else {
+            return ResultDTO.ok(petcageOrder);
+        }
+    }
+
+    @RequestMapping(value = "/get_petcage_status", method = RequestMethod.POST)
+    public ResultDTO getPetcageStatus(@RequestParam("device_id") String device_id) {
+        List<PetcageOrder> petcageStatus = petcageOrderService.getPetcageStatus(device_id);
+        if (petcageStatus.size() == 0) {
+            return ResultDTO.ok("无人使用");
+        } else {
+            return ResultDTO.fail("正在使用中");
+        }
+    }
+
 
 }

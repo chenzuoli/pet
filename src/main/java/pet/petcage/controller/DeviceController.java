@@ -88,4 +88,21 @@ public class DeviceController {
     public String getCharacteristicId() {
         return constant.getCharacteristic_id();
     }
+
+    @RequestMapping(value = "/get_device_power_volume", method = RequestMethod.POST)
+    public ResultDTO getDevicePowerVolume(@RequestParam("dvname") String dvname,
+                                          @RequestParam("encryptedStr") String encryptedStr) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("dvname", dvname);
+        params.put("acctoken", constant.getAcctoken());
+        params.put("str", encryptedStr);
+        String response = HttpUtil.sendPost(constant.getDecrypt_open_url(), params);
+        System.out.println("get device power volume response: " + response);
+        return ResultDTO.ok(response);
+    }
+
+    @RequestMapping(value = "/update_device_power_volume", method = RequestMethod.POST)
+    public ResultDTO updateDevicePowerVolume(){
+        return null;
+    }
 }

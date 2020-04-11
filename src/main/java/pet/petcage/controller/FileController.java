@@ -32,44 +32,39 @@ public class FileController {
             String path = null;
             String type = null;
             type = fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()) : null;
-            System.out.println("initialize file name as：" + fileName + ", type is：" + type);
+            System.out.println("initialize file name as: " + fileName + ", type is: " + type);
             if (type != null) {
-                if ("GIF".equals(type.toUpperCase()) || "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
-                    // 自定义的文件名称
-                    String trueFileName = String.valueOf(System.currentTimeMillis()) + fileName;
-                    // 设置存放图片文件的路径
-                    path = constant.getAvatar_path() + "/" + trueFileName;
-                    System.out.println("server local file path:" + path);
-                    file.transferTo(new File(path));
-                    System.out.println("success upload file to the server.");
+                // 自定义的文件名称
+                String trueFileName = String.valueOf(System.currentTimeMillis()) + fileName;
+                // 设置存放图片文件的路径
+                path = constant.getAvatar_path() + "/" + trueFileName;
+                System.out.println("server local file path:" + path);
+                file.transferTo(new File(path));
+                System.out.println("success upload file to the server.");
 
-                    // 文件上传到七牛云
-                    // 上传小程序码到七牛云
-                    System.out.println("upload the file to the qiniu cloud.");
-                    QiNiuCludeUtil.uploadFile(path,
-                            constant.getQiniu_access_key(),
-                            constant.getQiniu_secret_key(),
-                            constant.getQiniu_bucket_name());
+                // 文件上传到七牛云
+                // 上传小程序码到七牛云
+                System.out.println("upload the file to the qiniu cloud.");
+                QiNiuCludeUtil.uploadFile(path,
+                        constant.getQiniu_access_key(),
+                        constant.getQiniu_secret_key(),
+                        constant.getQiniu_bucket_name());
 //                    visit_url = QiNiuCludeUtil.getFileUrl(
 //                            constant.getQiniu_domain_of_bucket(),
 //                            path,
 //                            constant.getQiniu_access_key(),
 //                            constant.getQiniu_secret_key());
-                    // 公开空间
-                    visit_url = QiNiuCludeUtil.getFileUrl(
-                            constant.getQiniu_domain_of_bucket(),
-                            path
-                    );
-                } else {
-                    System.out.println("不是我们想要的文件类型,请按要求重新上传");
-                    return ResultDTO.fail("error");
-                }
+                // 公开空间
+                visit_url = QiNiuCludeUtil.getFileUrl(
+                        constant.getQiniu_domain_of_bucket(),
+                        path
+                );
             } else {
-                System.out.println("文件类型为空");
+                System.out.println("type of the file is empty");
                 return ResultDTO.fail("error");
             }
         } else {
-            System.out.println("没有找到相对应的文件");
+            System.out.println("cannot find the file");
             return ResultDTO.fail("error");
         }
         return ResultDTO.ok(visit_url);
