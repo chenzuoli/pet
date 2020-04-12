@@ -26,4 +26,10 @@ public interface DeviceRepository extends JpaRepository<Device, String> {
 
     @Query(value = "select * from device where id = ?1", nativeQuery = true)
     Device getDeviceById(String id);
+
+
+    @Transactional
+    @Modifying
+    @Query(value = "update device set kwh = ?2 where device_name = ?1", nativeQuery = true)
+    int updateDevicePowerVolume(String device_name, String kwh);
 }

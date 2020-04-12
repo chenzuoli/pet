@@ -7,7 +7,9 @@ import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import pet.petcage.common.Constant;
 
@@ -44,6 +46,9 @@ public class PetApplication {
             }
         };
         tomcat.addAdditionalTomcatConnectors(connector);
+
+        //解决请求中带[]{}等特殊字符的参数值
+        tomcat.addConnectorCustomizers((TomcatConnectorCustomizer) tomcat_connector -> tomcat_connector.setProperty("relaxedQueryChars", "|{}[]\\"));
         return tomcat;
     }
 

@@ -40,9 +40,20 @@ public class DeviceService extends BaseService<Device> {
         return devRepo.addDevice(device_id, device_name, latitude, longitude, kwh);
     }
 
+    /**
+     * 通过自增id获取设备信息
+     * @param id 设备表自增id
+     * @return Device对象
+     */
     public Device getDeviceInfo(String id) {
         System.out.println("params: " + id);
         return devRepo.getDeviceById(id);
     }
+
+    public int updateDevicePowerVolume(String device_name, String kwh) {
+        System.out.println("params: device_name=" + device_name + ",kwh=" + kwh);
+        return devRepo.updateDevicePowerVolume(device_name, kwh);
+    }
+
 
 }

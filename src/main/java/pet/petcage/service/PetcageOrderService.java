@@ -41,7 +41,7 @@ public class PetcageOrderService extends BaseService<PetcageOrder> {
         return petcageorderRepository.close_order(end_time, amount, open_id, order_id);
     }
 
-    public List<PetcageOrder> getPetcageOrder(String open_id){
+    public List<PetcageOrder> getPetcageOrder(String open_id) {
         System.out.println("params: " + open_id);
         return petcageorderRepository.getPetcageOrder(open_id);
     }

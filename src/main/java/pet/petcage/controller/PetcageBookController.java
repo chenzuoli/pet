@@ -23,24 +23,25 @@ public class PetcageBookController {
 
     /**
      * 添加宠笼预定
-     * @param open_id 用户open_id
-     * @param device_id 设备id
+     *
+     * @param open_id         用户open_id
+     * @param device_id       设备id
      * @param book_start_time 预定开始时间
-     * @param book_end_time 预定结束时间
+     * @param book_end_time   预定结束时间
      * @return ResultDTO
      */
     @RequestMapping(value = "/add_book", method = RequestMethod.POST)
     public ResultDTO addBook(@RequestParam("open_id") String open_id,
                              @RequestParam("device_id") String device_id,
                              @RequestParam("book_start_time") String book_start_time,
-                             @RequestParam("book_end_time") String book_end_time){
+                             @RequestParam("book_end_time") String book_end_time) {
         ResultDTO lineIndex = getLineIndex(device_id);
         int result = petcageBookService.addBook(
                 open_id,
                 device_id,
                 book_start_time,
                 book_end_time,
-                String.valueOf(Integer.parseInt(lineIndex.getData().toString())+1));
+                String.valueOf(Integer.parseInt(lineIndex.getData().toString()) + 1));
         if (result > 0) {
             return ResultDTO.ok(result);
         } else {
@@ -50,6 +51,7 @@ public class PetcageBookController {
 
     /**
      * 获取改宠笼排队人数
+     *
      * @param device_id 宠笼id
      * @return 宠笼排名名次ResultDTO
      */
