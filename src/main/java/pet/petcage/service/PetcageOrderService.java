@@ -40,7 +40,7 @@ public class PetcageOrderService extends BaseService<PetcageOrder> {
 
     public int close_order(String end_time, String amount, String open_id, String order_id) {
         System.out.println("clole order params: " + end_time + "," + amount + "," + open_id + "," + order_id);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String update_time = simpleDateFormat.format(new Date(System.currentTimeMillis()));
         return petcageorderRepository.close_order(end_time, amount, update_time, open_id, order_id);
     }
