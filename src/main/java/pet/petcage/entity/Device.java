@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by user chenzuoli on 2020/3/22 16:14
@@ -24,7 +21,7 @@ import javax.persistence.Table;
 @Table(name = "device", schema = "petcage")
 public class Device {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id; // 自增主键
     private String device_id; // 设备id
     private String device_name; // 设备名称

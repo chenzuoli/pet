@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by user chenzuoli on 2020/3/25 11:15
@@ -23,7 +20,7 @@ import javax.persistence.Table;
 @Table(name = "damage_type", schema = "petcage")
 public class DamageType {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id; // 自增主键
     private String code; // 故障类型
     private String name; // 故障名称

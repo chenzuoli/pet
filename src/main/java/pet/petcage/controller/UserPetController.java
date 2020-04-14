@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pet.petcage.dao.UserPetRepository;
 import pet.petcage.dto.ResultDTO;
 import pet.petcage.entity.UserPet;
 import pet.petcage.service.UserPetService;
@@ -20,6 +21,8 @@ public class UserPetController {
 
     @Autowired
     UserPetService userPetService;
+    @Autowired
+    UserPetRepository userPetRepository;
 
     /**
      * 更新宠物信息
@@ -95,9 +98,26 @@ public class UserPetController {
                                 String birthday,
                                 String avatar_url,
                                 String description) {
-        int result = userPetService.addUserPet(open_id, contact, pet_type, variety, nick_name, gender, birthday, avatar_url, description);
-        if (result > 0) {
-            return ResultDTO.ok(result);
+        UserPet userPet = new UserPet();
+        userPet.setOpen_id(open_id);
+        userPet.setContact(contact);
+        userPet.setPet_type(pet_type);
+        userPet.setVariety(variety);
+        userPet.setNick_name(nick_name);
+        userPet.setGender(gender);
+        userPet.setBirthday(birthday);
+        userPet.setAvatar_url(avatar_url);
+        userPet.setDescription(description);
+//        int result = userPetService.addUserPet(userPet);
+//        if (result > 0) {
+//            return ResultDTO.ok(userPet.getId());
+//        } else {
+//            return ResultDTO.fail("添加宠物失败。");
+//        }
+        UserPet save = userPetRepository.save(userPet);
+        if (save != null) {
+            // 返回插入的pet_id
+            return ResultDTO.ok(userPet.getId());
         } else {
             return ResultDTO.fail("添加宠物失败。");
         }

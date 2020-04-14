@@ -20,12 +20,12 @@ public class PetcageBookService extends BaseService<PetcageBook> {
     }
 
     public int addBook(String open_id, String device_id, String book_start_time, String book_end_time, String line_index) {
-        System.out.println("params: " + open_id + "," + device_id + "," + book_start_time + "," + book_end_time + "," + line_index);
+        System.out.println("add book params: " + open_id + "," + device_id + "," + book_start_time + "," + book_end_time + "," + line_index);
         return petcageBookRepository.addBook(open_id, device_id, book_start_time, book_end_time, line_index);
     }
 
     public PetcageBook getLineIndex(String device_id) {
-        System.out.println("getLineIndex params: " + device_id);
+        System.out.println("get line index params: " + device_id);
         return petcageBookRepository.getLineIndex(device_id);
     }
 

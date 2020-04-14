@@ -24,13 +24,13 @@ public interface PetcageOrderRepository extends JpaRepository<PetcageOrder, Stri
 
     @Transactional
     @Modifying
-    @Query(value = "insert into petcage_order(order_id, phone, open_id, is_done, device_id, start_time) values(?1,?2,?3,?4,?5,?6)", nativeQuery = true)
-    int add_order(String order_id, String phone, String open_id, boolean is_done, String device_id, String start_time);
+    @Query(value = "insert into petcage_order(order_id, phone, open_id, is_done, device_id, pet_id, start_time) values(?1,?2,?3,?4,?5,?6,?7)", nativeQuery = true)
+    int add_order(String order_id, String phone, String open_id, boolean is_done, String device_id, String pet_id, String start_time);
 
     @Transactional
     @Modifying
-    @Query(value = "update petcage_order set is_done = true, end_time = ?1, amount = ?2 where open_id = ?3 and order_id = ?4", nativeQuery = true)
-    int close_order(String end_time, String amount, String open_id, String order_id);
+    @Query(value = "update petcage_order set is_done = true, end_time = ?1, amount = ?2, update_time = ?3 where open_id = ?4 and order_id = ?5", nativeQuery = true)
+    int close_order(String end_time, String amount, String update_time, String open_id, String order_id);
 
     @Query(value = "select * from petcage_order where open_id = ?1", nativeQuery = true)
     List<PetcageOrder> getPetcageOrder(String open_id);

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import pet.petcage.dao.DeviceRepository;
 import pet.petcage.entity.Device;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,6 +44,7 @@ public class DeviceService extends BaseService<Device> {
 
     /**
      * 通过自增id获取设备信息
+     *
      * @param id 设备表自增id
      * @return Device对象
      */
@@ -51,8 +54,10 @@ public class DeviceService extends BaseService<Device> {
     }
 
     public int updateDevicePowerVolume(String device_name, String kwh) {
-        System.out.println("params: device_name=" + device_name + ",kwh=" + kwh);
-        return devRepo.updateDevicePowerVolume(device_name, kwh);
+        System.out.println("update device power volume params: device_name=" + device_name + ",kwh=" + kwh);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String update_time = simpleDateFormat.format(new Date(System.currentTimeMillis()));
+        return devRepo.updateDevicePowerVolume(device_name, kwh, update_time);
     }
 
 

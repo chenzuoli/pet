@@ -43,6 +43,7 @@ public class DeviceController {
 
     /**
      * 根据自增id获取设备信息
+     *
      * @param id 设备表自增主键id
      * @return 设备信息ResultDTO
      */
@@ -102,22 +103,25 @@ public class DeviceController {
         params.put("acctoken", constant.getAcctoken());
         params.put("str", encryptedStr);
         String response = HttpUtil.sendPost(constant.getDecrypt_open_url(), params);
-        JSONObject jsonObject = null;
+        String kwh = null;
         try {
-            jsonObject = JSONObject.parseObject(response);
-            String kwh = jsonObject.getString("msg").split("]")[0].split("=")[1];
+            JSONObject jsonObject = JSONObject.parseObject(response);
+            kwh = jsonObject.getString("msg").split("]")[0].split("=")[1];
             this.updateDevicePowerVolume(dvname, kwh);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("get device power volume response: " + jsonObject);
-        return ResultDTO.ok(jsonObject);
+        System.out.println("get device power volume response: " + response);
+        return ResultDTO.ok(kwh);
     }
 
     @RequestMapping(value = "/update_device_power_volume", method = RequestMethod.POST)
     public ResultDTO updateDevicePowerVolume(@RequestParam("device_name") String device_name,
                                              @RequestParam("kwh") String kwh) {
-        int result = deviceService.updateDevicePowerVolume(device_name, kwh);
+        int result = 0;
+        if (kwh != null && kwh.length() != 0) {
+            result = deviceService.updateDevicePowerVolume(device_name, kwh);
+        }
         if (result > 0) {
             return ResultDTO.ok(result);
         } else {

@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by user chenzuoli on 2020/4/8 15:53
@@ -22,8 +19,8 @@ import javax.persistence.Table;
 @Table(name = "user_pet", schema = "petcage")
 public class UserPet {
     @Id
-    @GeneratedValue
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String open_id; // 用户open_id
     private String contact; // 宠物联系人
     private String pet_type; // 宠物类型

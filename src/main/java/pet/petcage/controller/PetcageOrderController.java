@@ -50,11 +50,12 @@ public class PetcageOrderController {
     public int add_order(@RequestParam("order_id") String order_id,
                          @RequestParam("phone") String phone,
                          @RequestParam("open_id") String open_id,
-                         @RequestParam("device_id") String device_id) {
-        System.out.println("params: " + order_id + "," + phone + "," + open_id + "," + device_id);
+                         @RequestParam("device_id") String device_id,
+                         @RequestParam("pet_id") String pet_id) {
+        System.out.println("params: order_id=" + order_id + ",phone=" + phone + ",open_id=" + open_id + ",device_id=" + device_id + ",pet_id=" + pet_id);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String curr_time = simpleDateFormat.format(new Date(System.currentTimeMillis()));
-        return petcageOrderService.add_order(order_id, phone, open_id, false, device_id, curr_time);
+        return petcageOrderService.add_order(order_id, phone, open_id, false, device_id, pet_id, curr_time);
     }
 
 

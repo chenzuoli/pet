@@ -30,6 +30,6 @@ public interface DeviceRepository extends JpaRepository<Device, String> {
 
     @Transactional
     @Modifying
-    @Query(value = "update device set kwh = ?2 where device_name = ?1", nativeQuery = true)
-    int updateDevicePowerVolume(String device_name, String kwh);
+    @Query(value = "update device set kwh = ?2, update_time = ?3 where device_name = ?1", nativeQuery = true)
+    int updateDevicePowerVolume(String device_name, String kwh, String update_time);
 }

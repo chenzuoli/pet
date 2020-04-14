@@ -13,41 +13,41 @@ import java.util.UUID;
 @Service
 public class UserService extends BaseService<User> {
 
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     @Autowired
     UserRepository repo;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public User getById(String id) {
-        System.out.println("params: " + id);
+        System.out.println("get user by id params: " + id);
         return repo.findUserByPhone(id);
     }
 
     public boolean loginCheck(String phone, String pwd) {
-        System.out.println("params: " + phone + "," + pwd);
+        System.out.println("login check params: " + phone + "," + pwd);
         List<User> users = repo.loginCheck(phone, pwd);
         System.out.println(users);
         return users.size() != 0;
     }
 
     public int updatePass(String nick_name, String pwd, String phone) {
-        System.out.println("params: " + nick_name + "," + pwd + "," + phone);
-        return repo.updatePass(nick_name, pwd, phone);
+        String update_time = dateFormat.format(new Date(System.currentTimeMillis()));
+        System.out.println("update password params: " + nick_name + "," + pwd + "," + update_time + "," + phone);
+        return repo.updatePass(nick_name, pwd, update_time, phone);
     }
 
     public User getUserWallet(String open_id) {
-        System.out.println("params: " + open_id);
+        System.out.println("get user wallet params: " + open_id);
         return repo.getUserWallet(open_id);
     }
 
     public List<User> getUserByOpenid(String open_id) {
-        System.out.println("params: " + open_id);
+        System.out.println("get user by open_id params: " + open_id);
         return repo.getUserByOpenid(open_id);
     }
 
     public int addUser(User user) {
-        System.out.println("parmas: " + user);
+        System.out.println("add user parmas: " + user);
         return repo.addUser(
                 user.getPhone(),
                 user.getOpen_id(),
@@ -69,7 +69,8 @@ public class UserService extends BaseService<User> {
     }
 
     public int updateUser(User user) {
-        System.out.println("params: " + user);
+        System.out.println("update user params: " + user);
+        String update_time = dateFormat.format(new Date(System.currentTimeMillis()));
         return repo.updateUser(
                 user.getUnion_id(),
                 user.getToken(),
@@ -80,12 +81,13 @@ public class UserService extends BaseService<User> {
                 user.getGender(),
                 user.getNick_name(),
                 user.getLanguage(),
+                update_time,
                 user.getOpen_id()
         );
     }
 
     public List<User> getUserByToken(String token) {
-        System.out.println("params: " + token);
+        System.out.println("get user by token params: " + token);
         return repo.getUserByToken(token);
     }
 
