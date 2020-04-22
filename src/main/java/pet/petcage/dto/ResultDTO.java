@@ -30,6 +30,7 @@ public class ResultDTO {
     public static ResultDTO fail(String message) {
         ResultDTO resultDTO = new ResultDTO();
         resultDTO.setStatus(400);
+        resultDTO.setData("");
         resultDTO.setMessage(message);
         return resultDTO;
     }

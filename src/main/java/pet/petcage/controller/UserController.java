@@ -32,6 +32,8 @@ public class UserController {
     Constant constant;
     @Autowired
     UserService userService;
+    @Autowired
+    AppInfoController appInfoController;
 
     /**
      * 获取用户信息
@@ -55,11 +57,17 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResultDTO login(@RequestParam String phone, @RequestParam String pwd) {
         boolean is_match = userService.loginCheck(phone, pwd);
-        if (is_match) {
-            return ResultDTO.ok(is_match);
+        ResultDTO resultDTO = appInfoController.accessToken();
+        if (is_match && resultDTO.getStatus() == 200) {
+            // 更新用户token
+            updateUserToken(phone, resultDTO.getData().toString());
+            return ResultDTO.ok(resultDTO.getData());
         } else {
             return ResultDTO.fail("登录失败");
         }
+    }
+    private int updateUserToken(String phone, String token) {
+        return userService.updateUserToken(phone, token);
     }
 
     /**

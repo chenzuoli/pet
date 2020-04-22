@@ -91,4 +91,9 @@ public class UserService extends BaseService<User> {
         return repo.getUserByToken(token);
     }
 
+    public int updateUserToken(String phone, String token){
+        System.out.println("update user token: " + phone + "," + token);
+        return repo.updateUserToken(phone, token);
+    }
+
 }
