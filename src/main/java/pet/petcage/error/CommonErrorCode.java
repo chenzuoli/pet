@@ -12,19 +12,20 @@ public enum CommonErrorCode implements IErrorCode {
     UNKOWN_ERROR(1004, "未知错误，请重试"),
     NO_USER(1005, "登录异常，请重新登录"),
     SIGNATURE_ERROR(1006, "验证失败，传递信息有误"),
-    ;
+    CODE_INVALID(1007, "验证码错误"),
+    CODE_EXPIRED(1008, "验证码失效");
 
-    private Integer code;
+    private Integer status;
     private String message;
 
     CommonErrorCode(Integer code, String message) {
-        this.code = code;
+        this.status = code;
         this.message = message;
     }
 
     @Override
     public Integer getCode() {
-        return this.code;
+        return this.status;
     }
 
     @Override

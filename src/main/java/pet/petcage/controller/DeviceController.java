@@ -27,18 +27,24 @@ public class DeviceController {
     @Autowired
     Constant constant;
 
-    @RequestMapping(value = "/getDeviceLocations", method = RequestMethod.POST)
-    public List<Device> getDeviceLocations() {
-        return deviceService.getDeviceLocations();
+    @RequestMapping(value = "/get_device_location", method = RequestMethod.POST)
+    public ResultDTO getDeviceLocations() {
+        List<Device> deviceLocations = deviceService.getDeviceLocations();
+        return ResultDTO.ok(deviceLocations);
     }
 
-    @RequestMapping("/addDevice")
-    public int addDevice(@RequestParam String device_id,
-                         @RequestParam String device_name,
-                         @RequestParam String latitude,
-                         @RequestParam String longitude,
-                         @RequestParam String kwh) {
-        return deviceService.addDevice(device_id, device_name, latitude, longitude, kwh);
+    @RequestMapping("/add_device")
+    public ResultDTO addDevice(@RequestParam String device_id,
+                               @RequestParam String device_name,
+                               @RequestParam String latitude,
+                               @RequestParam String longitude,
+                               @RequestParam String kwh) {
+        int result = deviceService.addDevice(device_id, device_name, latitude, longitude, kwh);
+        if (result > 0) {
+            return ResultDTO.ok(result);
+        } else {
+            return ResultDTO.fail("添加设备失败");
+        }
     }
 
     /**
@@ -69,9 +75,14 @@ public class DeviceController {
         params.put("acctoken", constant.getAcctoken());
         String response = HttpUtil.sendPost(constant.getDev_command_list(), params);
         BluetoothDTO bluetoothDTO = new BluetoothDTO();
-        JSONObject jsonObject = JSONObject.parseObject(response);
-        bluetoothDTO.setSta(jsonObject.getString("sta"));
-        bluetoothDTO.setMsg(jsonObject.getJSONObject("msg"));
+        try {
+            JSONObject jsonObject = JSONObject.parseObject(response);
+            bluetoothDTO.setSta(jsonObject.getString("sta"));
+            bluetoothDTO.setMsg(jsonObject.getJSONObject("msg"));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResultDTO.fail("获取设备命令集失败");
+        }
         return ResultDTO.ok(bluetoothDTO);
     }
 
@@ -81,8 +92,13 @@ public class DeviceController {
      * @return 服务id
      */
     @RequestMapping(value = "/get_service_id")
-    public String getServiceId() {
-        return constant.getService_id();
+    public ResultDTO getServiceId() {
+        String service_id = constant.getService_id();
+        if (service_id == null || service_id.trim().equals("")) {
+            return ResultDTO.fail("获取服务id失败");
+        } else {
+            return ResultDTO.ok(service_id);
+        }
     }
 
     /**
@@ -91,8 +107,13 @@ public class DeviceController {
      * @return 特征id
      */
     @RequestMapping(value = "/get_characteristic_id")
-    public String getCharacteristicId() {
-        return constant.getCharacteristic_id();
+    public ResultDTO getCharacteristicId() {
+        String characteristic_id = constant.getCharacteristic_id();
+        if (characteristic_id == null || characteristic_id.trim().equals("")) {
+            return ResultDTO.fail("获取特征id失败");
+        } else {
+            return ResultDTO.ok(characteristic_id);
+        }
     }
 
     @RequestMapping(value = "/get_device_power_volume")

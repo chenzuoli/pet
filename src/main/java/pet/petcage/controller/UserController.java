@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pet.petcage.common.Constant;
 import pet.petcage.dto.ResultDTO;
 import pet.petcage.entity.User;
+import pet.petcage.error.CommonErrorCode;
 import pet.petcage.service.UserService;
 
 import javax.servlet.http.HttpSession;
@@ -38,9 +39,10 @@ public class UserController {
      * @param phone 用户手机号
      * @return 返回用户对象
      */
-    @RequestMapping(value = "/getUserByPhone", method = RequestMethod.POST)
-    public User getUserByPhone(@RequestParam String phone) {
-        return userService.getById(phone);
+    @RequestMapping(value = "/get_user_by_phone", method = RequestMethod.POST)
+    public ResultDTO getUserByPhone(@RequestParam String phone) {
+        User user = userService.getById(phone);
+        return ResultDTO.ok(user);
     }
 
     /**
@@ -51,8 +53,13 @@ public class UserController {
      * @return 用户名密码是否匹配
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public boolean login(@RequestParam String phone, @RequestParam String pwd) {
-        return userService.loginCheck(phone, pwd);
+    public ResultDTO login(@RequestParam String phone, @RequestParam String pwd) {
+        boolean is_match = userService.loginCheck(phone, pwd);
+        if (is_match) {
+            return ResultDTO.ok(is_match);
+        } else {
+            return ResultDTO.fail("登录失败");
+        }
     }
 
     /**
@@ -62,8 +69,8 @@ public class UserController {
      * @param httpSession session
      * @return boolean 发送成功、失败
      */
-    @RequestMapping("/smsCode")
-    public boolean smsCode(@RequestParam String phone, HttpSession httpSession) {
+    @RequestMapping("/sms_code")
+    public ResultDTO smsCode(@RequestParam String phone, HttpSession httpSession) {
         try {
             ZhenziSmsClient client = new ZhenziSmsClient(
                     constant.getSms_url(),
@@ -76,7 +83,7 @@ public class UserController {
             String result = client.send(params);
             JSONObject json = JSONObject.parseObject(result);
             if (json.getIntValue("code") != 0) {//发送短信失败
-                return false;
+                return ResultDTO.fail("发送验证码失败");
             }
             //将验证码存到session中,同时存入创建时间
             //以json存放，这里使用的是阿里的fastjson
@@ -86,11 +93,11 @@ public class UserController {
             json.put("createTime", System.currentTimeMillis());
             // 将认证码存入SESSION
             httpSession.setAttribute("code", json);
-            return true;
+            return ResultDTO.ok(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return ResultDTO.fail("发送验证码失败");
     }
 
     /**
@@ -102,24 +109,21 @@ public class UserController {
      * @return 验证结果
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public JSONObject smsCodeCheck(@RequestParam String phone,
-                                   @RequestParam String code,
-                                   HttpSession httpSession) {
-        JSONObject result = new JSONObject();
+    public ResultDTO smsCodeCheck(@RequestParam String phone,
+                                  @RequestParam String code,
+                                  HttpSession httpSession) {
+        ResultDTO resultDTO = null;
         JSONObject json = (JSONObject) httpSession.getAttribute("code");
         if (System.currentTimeMillis() - 5 * 60 * 1000 > Long.parseLong(json.getString("createTime"))) {
-            result.put("code", 0);
-            result.put("msg", "验证码失效");
+            resultDTO = ResultDTO.fail(CommonErrorCode.CODE_EXPIRED);
         } else {
             if (phone.equals(json.getString("phone")) && code.equals(json.getString("code"))) {
-                result.put("code", "1");
-                result.put("msg", "验证码正确");
+                resultDTO = ResultDTO.ok("注册成功");
             } else {
-                result.put("code", "0");
-                result.put("msg", "验证码错误");
+                resultDTO = ResultDTO.fail(CommonErrorCode.CODE_INVALID);
             }
         }
-        return result;
+        return resultDTO;
     }
 
     /**
@@ -132,28 +136,29 @@ public class UserController {
      * @param httpSession session
      * @return 更新结果
      */
-    @RequestMapping(value = "/updatePass", method = RequestMethod.POST)
-    public JSONObject updatePass(@RequestParam("nick_name") String nick_name,
-                                 @RequestParam("pwd") String pwd,
-                                 @RequestParam("phone") String phone,
-                                 @RequestParam("code") String code,
-                                 HttpSession httpSession) {
+    @RequestMapping(value = "/update_pass", method = RequestMethod.POST)
+    public ResultDTO updatePass(@RequestParam("nick_name") String nick_name,
+                                @RequestParam("pwd") String pwd,
+                                @RequestParam("phone") String phone,
+                                @RequestParam("code") String code,
+                                HttpSession httpSession) {
         JSONObject json = (JSONObject) httpSession.getAttribute("code");
-        JSONObject result = new JSONObject();
+        ResultDTO resultDTO = null;
         if (System.currentTimeMillis() - 5 * 60 * 1000 > Long.parseLong(json.getString("createTime"))) {
-            result.put("code", 0);
-            result.put("msg", "验证码失效");
+            resultDTO = ResultDTO.fail(CommonErrorCode.CODE_EXPIRED);
         } else {
             if (phone.equals(json.getString("phone")) && code.equals(json.getString("code"))) {
                 int flag = userService.updatePass(nick_name, pwd, phone);
-                result.put("code", flag > 0 ? "1" : "0");
-                result.put("msg", flag > 0 ? "更新成功" : "更新失败");
+                if (flag > 0) {
+                    resultDTO = ResultDTO.ok("更新密码成功");
+                } else {
+                    resultDTO = ResultDTO.fail("更新密码失败");
+                }
             } else {
-                result.put("code", "0");
-                result.put("msg", "验证码错误");
+                resultDTO = ResultDTO.fail(CommonErrorCode.CODE_INVALID);
             }
         }
-        return result;
+        return resultDTO;
     }
 
     /**
@@ -184,14 +189,24 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
-    public int addUser(User user) {
-        return userService.addUser(user);
+    @RequestMapping(value = "/add_user", method = RequestMethod.POST)
+    public ResultDTO addUser(User user) {
+        int result = userService.addUser(user);
+        if (result > 0) {
+            return ResultDTO.ok("添加用户成功");
+        } else {
+            return ResultDTO.fail("添加用户失败");
+        }
     }
 
-    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
-    public int updateUser(User user) {
-        return userService.updateUser(user);
+    @RequestMapping(value = "/update_user", method = RequestMethod.POST)
+    public ResultDTO updateUser(User user) {
+        int result = userService.updateUser(user);
+        if (result > 0) {
+            return ResultDTO.ok("更新用户成功");
+        } else {
+            return ResultDTO.fail("更新用户失败");
+        }
     }
 
 }

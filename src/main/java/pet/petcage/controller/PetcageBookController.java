@@ -55,7 +55,7 @@ public class PetcageBookController {
      * @param device_id 宠笼id
      * @return 宠笼排名名次ResultDTO
      */
-    public ResultDTO getLineIndex(@RequestParam("device_id") String device_id) {
+    private ResultDTO getLineIndex(@RequestParam("device_id") String device_id) {
         PetcageBook petcageBook = petcageBookService.getLineIndex(device_id);
         if (petcageBook == null) {
             return ResultDTO.ok(0);

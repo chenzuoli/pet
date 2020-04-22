@@ -46,7 +46,7 @@ public class AppInfoController {
      * @return session_key open_id
      */
     @RequestMapping(value = "/open_id", method = RequestMethod.POST)
-    public ResultDTO openId(@RequestParam String js_code) {
+    public ResultDTO openId(@RequestParam("js_code") String js_code) {
         HashMap<String, String> params = new HashMap<>();
         params.put("appid", constant.getWx_app_id());
         params.put("secret", constant.getWx_app_secret());
@@ -55,9 +55,14 @@ public class AppInfoController {
         String response = HttpUtil.sendPost(constant.getAccess_url(), params);
         System.out.println("response: " + response);
         SessionDTO sessionDTO = new SessionDTO();
-        JSONObject jsonObject = JSONObject.parseObject(response);
-        sessionDTO.setOpen_id(jsonObject.getString("openid"));
-        sessionDTO.setSession_key(jsonObject.getString("session_key"));
+        try {
+            JSONObject jsonObject = JSONObject.parseObject(response);
+            sessionDTO.setOpen_id(jsonObject.getString("openid"));
+            sessionDTO.setSession_key(jsonObject.getString("session_key"));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResultDTO.fail("获取失败");
+        }
         return ResultDTO.ok(sessionDTO);
     }
 
@@ -67,8 +72,8 @@ public class AppInfoController {
      * @return 请求响应
      */
     @RequestMapping(value = "/access_token", method = RequestMethod.GET)
-    public String accessToken() {
-        String token = "";
+    public ResultDTO accessToken() {
+        ResultDTO resultDTO = null;
         try {
             StringBuilder params = new StringBuilder();
             params.append("appid=").append(constant.getWx_app_id());
@@ -78,11 +83,13 @@ public class AppInfoController {
             System.out.println(request_url);
             String response = HttpUtil.get(request_url);
             System.out.println("get access token response: " + response);
-            token = JSONObject.parseObject(response).getString("access_token");
+            String token = JSONObject.parseObject(response).getString("access_token");
+            resultDTO = ResultDTO.ok(token);
         } catch (Exception e) {
             e.printStackTrace();
+            resultDTO = ResultDTO.fail("获取失败");
         }
-        return token;
+        return resultDTO;
     }
 
     /**
@@ -138,7 +145,7 @@ public class AppInfoController {
         QRCodeDTO qrCodeDTO = new QRCodeDTO();
         try {
             //获取小程序码调用API
-            String url = constant.getUnlimited_qrcode() + "?access_token=" + this.accessToken();
+            String url = constant.getUnlimited_qrcode() + "?access_token=" + this.accessToken().getData();
             System.out.println("get qrcode url: " + url);
             Map<String, Object> param = new HashMap();
             param.put("page", page);//小程序页面
@@ -202,7 +209,7 @@ public class AppInfoController {
         OutputStream outputStream = null;
         String visit_url = "";
         try {
-            String url = constant.getUnlimited_qrcode() + "?access_token=" + this.accessToken();
+            String url = constant.getUnlimited_qrcode() + "?access_token=" + this.accessToken().getData();
             Map<String, Object> param = new HashMap<>();
             param.put("scene", scene);
             param.put("page", page);
@@ -283,7 +290,7 @@ public class AppInfoController {
         OutputStream outputStream = null;
         String visit_url = null;
         try {
-            String url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" + this.accessToken();
+            String url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" + this.accessToken().getData();
             Map<String, Object> param = new HashMap<>();
             param.put("scene", scene);
             param.put("page", page);

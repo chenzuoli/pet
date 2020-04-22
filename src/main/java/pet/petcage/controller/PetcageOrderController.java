@@ -47,15 +47,20 @@ public class PetcageOrderController {
      * @return 添加成功或失败 >0表示成功
      */
     @RequestMapping(value = "/add_order", method = RequestMethod.POST)
-    public int add_order(@RequestParam("order_id") String order_id,
-                         @RequestParam("phone") String phone,
-                         @RequestParam("open_id") String open_id,
-                         @RequestParam("device_id") String device_id,
-                         @RequestParam("pet_id") String pet_id) {
+    public ResultDTO add_order(@RequestParam("order_id") String order_id,
+                               @RequestParam("phone") String phone,
+                               @RequestParam("open_id") String open_id,
+                               @RequestParam("device_id") String device_id,
+                               @RequestParam("pet_id") String pet_id) {
         System.out.println("params: order_id=" + order_id + ",phone=" + phone + ",open_id=" + open_id + ",device_id=" + device_id + ",pet_id=" + pet_id);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String curr_time = simpleDateFormat.format(new Date(System.currentTimeMillis()));
-        return petcageOrderService.add_order(order_id, phone, open_id, false, device_id, pet_id, curr_time);
+        int result = petcageOrderService.add_order(order_id, phone, open_id, false, device_id, pet_id, curr_time);
+        if (result > 0) {
+            return ResultDTO.ok(result);
+        } else {
+            return ResultDTO.fail("添加订单失败");
+        }
     }
 
 
@@ -68,13 +73,18 @@ public class PetcageOrderController {
      * @return >0表示关闭成功 <=0表示关闭失败
      */
     @RequestMapping(value = "/close_order", method = RequestMethod.POST)
-    public int close_order(@RequestParam("amount") String amount,
-                           @RequestParam("open_id") String open_id,
-                           @RequestParam("order_id") String order_id) {
+    public ResultDTO close_order(@RequestParam("amount") String amount,
+                                 @RequestParam("open_id") String open_id,
+                                 @RequestParam("order_id") String order_id) {
         System.out.println("params: " + amount + "," + open_id + "," + order_id);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String curr_time = simpleDateFormat.format(new Date(System.currentTimeMillis()));
-        return petcageOrderService.close_order(curr_time, amount, open_id, order_id);
+        int result = petcageOrderService.close_order(curr_time, amount, open_id, order_id);
+        if (result > 0) {
+            return ResultDTO.ok(result);
+        } else {
+            return ResultDTO.fail("关闭订单失败");
+        }
     }
 
     /**
@@ -86,11 +96,7 @@ public class PetcageOrderController {
     @RequestMapping(value = "/get_petcage_order", method = RequestMethod.POST)
     public ResultDTO getPetcageOrder(@RequestParam("open_id") String open_id) {
         List<PetcageOrder> petcageOrder = petcageOrderService.getPetcageOrder(open_id);
-        if (petcageOrder.size() == 0) {
-            return ResultDTO.fail("查询无结果");
-        } else {
-            return ResultDTO.ok(petcageOrder);
-        }
+        return ResultDTO.ok(petcageOrder);
     }
 
     @RequestMapping(value = "/get_petcage_status", method = RequestMethod.POST)
