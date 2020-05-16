@@ -36,10 +36,12 @@ public class DeviceController {
     @RequestMapping("/add_device")
     public ResultDTO addDevice(@RequestParam String device_id,
                                @RequestParam String device_name,
+                               @RequestParam String accessory_ids,
+                               @RequestParam String phone,
                                @RequestParam String latitude,
                                @RequestParam String longitude,
                                @RequestParam String kwh) {
-        int result = deviceService.addDevice(device_id, device_name, latitude, longitude, kwh);
+        int result = deviceService.addDevice(device_id, device_name, accessory_ids, phone, latitude, longitude, kwh);
         if (result > 0) {
             return ResultDTO.ok(result);
         } else {

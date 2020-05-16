@@ -37,9 +37,9 @@ public class DeviceService extends BaseService<Device> {
      * @param kwh         设备所剩电量
      * @return 返回设备信息
      */
-    public int addDevice(String device_id, String device_name, String latitude, String longitude, String kwh) {
-        System.out.println("params: " + device_id + "," + device_name + "," + latitude + "," + longitude + "," + kwh);
-        return devRepo.addDevice(device_id, device_name, latitude, longitude, kwh);
+    public int addDevice(String device_id, String device_name, String accessory_ids, String phone, String latitude, String longitude, String kwh) {
+        System.out.println("params: " + device_id + "," + device_name + "," + accessory_ids + "," + phone + "," + latitude + "," + longitude + "," + kwh);
+        return devRepo.addDevice(device_id, device_name, accessory_ids, phone, latitude, longitude, kwh);
     }
 
     /**

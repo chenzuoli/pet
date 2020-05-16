@@ -25,6 +25,8 @@ public class Device {
     private String id; // 自增主键
     private String device_id; // 设备id
     private String device_name; // 设备名称
+    private String accessory_ids; // 配件id，逗号分隔
+    private String phone; // 商户手机号
     private String longitude; // 设备径度
     private String latitude; // 设备纬度
     private String kwh; // 设备电量余额
