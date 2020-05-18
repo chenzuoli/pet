@@ -95,7 +95,7 @@ create table if not exists feedback(
   phone varchar(100) comment '用户手机号',
   open_id varchar(100) comment '用户open_id',
   order_id varchar(100) comment '订单id',
-  feedback_type varchar(10) comment '反馈类型(1订单反馈,2设备维修,3系统反馈)',
+  feedback_type varchar(10) comment '反馈类型(1订单反馈,2设备维修,3系统反馈,4商家反馈)',
   feedback_content varchar(255) comment '反馈内容（1,2,3,4,5,6）',
   satisfy_grade varchar(100) comment '客户满意度（订单反馈有效）',
   pictures text comment '故障图片(http://xxxx)',

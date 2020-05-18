@@ -21,12 +21,11 @@ public interface DeviceRepository extends JpaRepository<Device, String> {
 
     @Transactional
     @Modifying
-    @Query(value = "insert into device(device_id, device_name, accessory_ids, phone, latitude, longitude, kwh) values(?1, ?2, ?3, ?4, ?5, ?6, ?7)", nativeQuery = true)
-    int addDevice(String device_id, String device_name, String accessory_ids, String phone, String latitude, String longitude, String kwh);
+    @Query(value = "insert into device(device_id, device_name, accessory_ids, phone, latitude, longitude, kwh, status) values(?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)", nativeQuery = true)
+    int addDevice(String device_id, String device_name, String accessory_ids, String phone, String latitude, String longitude, String kwh, String status);
 
     @Query(value = "select * from device where id = ?1", nativeQuery = true)
     Device getDeviceById(String id);
-
 
     @Transactional
     @Modifying
