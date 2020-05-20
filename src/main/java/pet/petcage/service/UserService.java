@@ -68,6 +68,17 @@ public class UserService extends BaseService<User> {
         );
     }
 
+    public int register(String phone, String pwd, String token) {
+        System.out.println("register params: " + phone + "," + pwd + "," + token);
+        return repo.register(phone,
+                pwd,
+                "1",
+                "0",
+                dateFormat.format(new Date(System.currentTimeMillis())),
+                "3000-12-31 00:00:00",
+                token);
+    }
+
     public int updateUser(User user) {
         System.out.println("update user params: " + user);
         String update_time = dateFormat.format(new Date(System.currentTimeMillis()));
@@ -91,7 +102,7 @@ public class UserService extends BaseService<User> {
         return repo.getUserByToken(token);
     }
 
-    public int updateUserToken(String phone, String token){
+    public int updateUserToken(String phone, String token) {
         System.out.println("update user token: " + phone + "," + token);
         return repo.updateUserToken(phone, token);
     }

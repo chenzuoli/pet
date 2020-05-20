@@ -66,6 +66,7 @@ public class UserController {
             return ResultDTO.fail("登录失败");
         }
     }
+
     private int updateUserToken(String phone, String token) {
         return userService.updateUserToken(phone, token);
     }
@@ -116,7 +117,7 @@ public class UserController {
      * @param httpSession session
      * @return 验证结果
      */
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register_code", method = RequestMethod.POST)
     public ResultDTO smsCodeCheck(@RequestParam String phone,
                                   @RequestParam String code,
                                   HttpSession httpSession) {
@@ -133,6 +134,20 @@ public class UserController {
 //        }
         resultDTO = ResultDTO.ok("注册成功");
         return resultDTO;
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResultDTO register(@RequestParam("phone") String phone,
+                              @RequestParam("pwd") String pwd) {
+        ResultDTO resultDTO = appInfoController.accessToken();
+        int result = userService.register(phone, pwd, resultDTO.getData().toString());
+        if (result > 0) {
+            // 更新用户token
+            updateUserToken(phone, resultDTO.getData().toString());
+            return ResultDTO.ok(resultDTO.getData());
+        } else {
+            return ResultDTO.fail("登录失败");
+        }
     }
 
     /**

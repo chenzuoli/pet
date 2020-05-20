@@ -1,5 +1,6 @@
 package pet.petcage.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,16 @@ public class DeviceController {
     @RequestMapping(value = "/get_device_location", method = RequestMethod.POST)
     public ResultDTO getDeviceLocations() {
         List<Device> deviceLocations = deviceService.getDeviceLocations();
-        return ResultDTO.ok(deviceLocations);
+        JSONArray result = new JSONArray();
+        for (Device device : deviceLocations) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", device.getId());
+            jsonObject.put("device_id", device.getDevice_id());
+            jsonObject.put("latitude", device.getLatitude());
+            jsonObject.put("longitude", device.getLongitude());
+            result.add(jsonObject);
+        }
+        return ResultDTO.ok(result);
     }
 
     @RequestMapping("/add_device")
