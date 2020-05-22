@@ -50,8 +50,9 @@ public class DeviceController {
                                @RequestParam String phone,
                                @RequestParam String latitude,
                                @RequestParam String longitude,
-                               @RequestParam String kwh) {
-        int result = deviceService.addDevice(device_id, device_name, accessory_ids, phone, latitude, longitude, kwh);
+                               @RequestParam String kwh,
+                               @RequestParam String size) {
+        int result = deviceService.addDevice(device_id, device_name, accessory_ids, phone, latitude, longitude, kwh, size);
         if (result > 0) {
             return ResultDTO.ok(result);
         } else {
