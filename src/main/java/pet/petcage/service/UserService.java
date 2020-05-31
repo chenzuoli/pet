@@ -107,4 +107,9 @@ public class UserService extends BaseService<User> {
         return repo.updateUserToken(phone, token);
     }
 
+    public int updateUserInfo(String avatar_url, String nick_name, String gender, String phone, String province, String city, String open_id) {
+        System.out.println("update user info: " + avatar_url + "," + nick_name + "," + gender + "," + phone + "," + province + "," + city + "," + open_id);
+        return repo.updateUserInfo(avatar_url, nick_name, gender, phone, province, city, open_id);
+    }
+
 }

@@ -233,4 +233,20 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/update_user_info", method = RequestMethod.POST)
+    public ResultDTO updateUserInfo(@RequestParam("avatar_url") String avatar_url,
+                                    @RequestParam("nick_name") String nick_name,
+                                    @RequestParam("gender") String gender,
+                                    @RequestParam("phone") String phone,
+                                    @RequestParam("province") String province,
+                                    @RequestParam("city") String city,
+                                    @RequestParam("open_id") String open_id) {
+        int result = userService.updateUserInfo(avatar_url, nick_name, gender, phone, province, city, open_id);
+        if (result > 0) {
+            return ResultDTO.ok("更新用户成功");
+        } else {
+            return ResultDTO.fail("更新用户失败");
+        }
+    }
+
 }
